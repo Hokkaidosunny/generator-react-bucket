@@ -1,23 +1,22 @@
 {
   "name": "generator-react-bucket",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "author": "shenshuaijia",
+  "description": "a react generator (with redux&react-router&sass&es6&webpack)",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Hokkaidosunny/generator-react-bucket.git"
   },
   "files": [
-    "app",
-    "router"
+    "app"
   ],
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator",
+    "yeoman",
+    "generator"
   ],
-  "author": "ShenShuaijia",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Hokkaidosunny/generator-react-bucket/issues"
