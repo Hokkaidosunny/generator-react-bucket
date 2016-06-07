@@ -1,6 +1,6 @@
 #Usage
 
-##install yoman
+##install yeoman
 ```
 npm i -g yo
 ```
