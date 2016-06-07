@@ -2,14 +2,8 @@ var generators = require('yeoman-generator');
 var extend = require('deep-extend');
 
 module.exports = generators.Base.extend({
-  /*初始化方法（检验当前项目状态、获取configs、等）*/
   initializing: function () {
     this.props = {};
-  },
-
-  /*获取用户选项*/
-  prompting: function () {
-
   },
 
   writing: function () {
