@@ -2,7 +2,9 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    app: ['./src/index.js']
+  },
   output: {
     path: path.join(__dirname, '/assets/'),
     filename: 'bundle.js',
@@ -24,6 +26,10 @@ module.exports = {
 	  	test: /\.(gif|jpg|png|woff|svg|eot|ttf)$/,
 	  	loader: 'url-loader?limit=50000'
 	  }
-    ]
+    ],
+    plugins: [
+      new webpack.HotModuleReplacementPlugin()//hot load
+  	],
+  	devtool: 'source-map'
   }
 }
