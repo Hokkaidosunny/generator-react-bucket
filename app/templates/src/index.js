@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import configureStore from './store/configureStore.js';//get store creator
-import Root from './containers/Root.js';//get root 
+import Root from './containers/Root.js';//get root
 
-let store = configureStore();
+const store = configureStore();
 
 ReactDOM.render(
   <Root store={store} />,

@@ -7,4 +7,4 @@ const rootReducer = combineReducers({
   router//combine with router
 });
 
-export default rootReducer
+export default rootReducer;

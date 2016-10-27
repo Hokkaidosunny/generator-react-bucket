@@ -7,7 +7,7 @@ import routes from '../routes.js';
 
 const finalCreateStore = compose(
   applyMiddleware(thunk),
-  reduxReactRouter({ routes,createHistory })
+  reduxReactRouter({ routes, createHistory })
 )(createStore);
 
 export default function configureStore(initialState) {

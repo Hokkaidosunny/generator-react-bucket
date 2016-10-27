@@ -16,7 +16,7 @@ class App extends Component {
 // bind state's property to App component's props
 function mapStateToProps(state) {
   return {
-  	counter: state.counter
+    counter: state.counter
   };
 }
 

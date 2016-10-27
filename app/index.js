@@ -9,12 +9,12 @@ module.exports = generators.Base.extend({
   writing: function () {
     /*copy source files*/
     this.fs.copy(
-      this.templatePath(),//from
+      this.templatePath(), //from
       this.destinationPath()//to
     );
 
     /*modify package.json*/
-    var pkg = this.fs.readJSON(this.destinationPath('package.json'),{});
+    var pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
     extend(pkg, {
       scripts: {
         "prestart": "npm install",
