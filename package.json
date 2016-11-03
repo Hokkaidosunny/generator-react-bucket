@@ -1,8 +1,8 @@
 {
   "name": "generator-react-bucket",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "shenshuaijia",
-  "description": "a react generator (with redux&react-router&sass&es6&webpack)",
+  "description": "a react generator (with redux & react-router)",
   "scripts": {},
   "repository": {
     "type": "git",

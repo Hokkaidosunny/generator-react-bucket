@@ -1,34 +1,20 @@
 #### Usage
 
-1. install yoman
+1. install yoman: `npm i -g yo`
 
-   ```shell
-   npm i -g yo
-   ```
+2. install generator-react-bucket: `npm i -g generator-react-bucket`
 
-   ​
+3. enter into your word space and generate the demo, e.g.
 
-2. install generator-react-bucket
 
-   ```shell
-   npm i -g generator-react-bucket
-   ```
-
-   ​
-
-3. enter into your word space and build the demo
-
-   ```shell
+   ```Shell
+   #if I want to creat a react app named: helloReact
+   mkdir helloReact
+   cd helloReact
    yo react-bucket
+   #done
    ```
 
-   ​
+4. run the demo: `npm start`
 
-4. run the demo
-
-   ```shell
-   npm start
-   ```
-
-5. now you can see the demo running at http://127.0.0.1:8000 
-
+5. the demo is running at http://127.0.0.1:3000 
