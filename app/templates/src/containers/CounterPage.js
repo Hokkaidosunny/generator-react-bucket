@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { increment, decrement } from '../actions/counter.js';
+import { incrementWaitOneSeconds } from '../actions/asyncActions.js';
 import Counter from '../components/Counter.js';
 import '../style/counterpage.css';
 
@@ -30,7 +31,7 @@ function mapStateToProps(state) {
 // bind actions to App component's props
 function mapDispatchToProps(dispatch) {
   return {
-    onIncrement: () => dispatch(increment()),
+    onIncrement: () => dispatch(incrementWaitOneSeconds()),
     onDecrement: () => dispatch(decrement())
   };
 }
