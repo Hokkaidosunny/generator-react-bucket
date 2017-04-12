@@ -1,13 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
-import thunk from 'redux-thunk';  //use it for async action
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
-import { Router, hashHistory } from 'react-router';
-import reducers from './reducers/index.js';
-import routes from './routes.js';
-
 /** how it works
   React
     ↓
@@ -21,6 +11,16 @@ import routes from './routes.js';
     ↓
   react-router
 */
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
+import thunk from 'redux-thunk';  //use it for async action
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import { Router, hashHistory } from 'react-router';
+import reducers from './reducers/index.js';
+import routes from './routes.js';
 
 const reducer = combineReducers({
   ...reducers,
