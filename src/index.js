@@ -22,14 +22,24 @@ import { Router, hashHistory } from 'react-router';
 import reducers from './reducers/index.js';
 import routes from './routes.js';
 
+//reducer
 const reducer = combineReducers({
   ...reducers,
   routing: routerReducer
 });
 
-const store = compose(
-  applyMiddleware(thunk)
-)(createStore)(reducer);
+//use chrome extension
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+//enhancers
+const enhancers = [];
+enhancers.push(applyMiddleware(thunk));
+
+//createStore
+const store = createStore(
+  reducer,
+  composeEnhancers(...enhancers)
+);
 
 const history = syncHistoryWithStore(hashHistory, store);
 

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import '../style/app.css';
+import '../style/app.scss';
 
 class App extends Component {
   static propTypes = {

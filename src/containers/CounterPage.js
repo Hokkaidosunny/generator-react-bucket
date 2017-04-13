@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { increment, decrement } from '../actions/counter.js';
 import { incrementWaitOneSeconds } from '../actions/asyncActions.js';
 import Counter from '../components/Counter.js';
-import '../style/counterpage.css';
+import '../style/counterpage.scss';
 
 class CounterPage extends Component {
   static propTypes = {
