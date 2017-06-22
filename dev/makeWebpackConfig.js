@@ -1,6 +1,7 @@
-import path from "path";
-import webpack from "webpack";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+import path from 'path';
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 
 //entry
 function getEntry() {
@@ -10,7 +11,7 @@ function getEntry() {
 //output
 function getOutput() {
   return {
-    path: path.join(__dirname, '/dist/'),
+    path: path.join(__dirname, '../dist/'),
     filename: '[name].[hash].js',
     chunkFilename: '[name].[hash].js',
     sourceMapFilename: '[file].map'
@@ -26,11 +27,11 @@ function getRules() {
     }, {
       test: /\.(scss|sass)$/,
       use: [{
-        loader: "style-loader"
+        loader: 'style-loader'
       }, {
-        loader: "css-loader"
+        loader: 'css-loader'
       }, {
-        loader: "sass-loader"
+        loader: 'sass-loader'
       }]
     }, {
       test: /\.(js|jsx)$/,
@@ -61,10 +62,10 @@ function getPlugins({isDev, isPro, ifOpenActionLogger}) {
 
   if (isPro) {
     plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
+      new UglifyJSPlugin({
         sourceMap: true,
         compress: {
-          warnings: false,  //no warnings
+          warnings: false,  //buid 的时候不要报warnings
           drop_console: true  //no console
         }
       })

@@ -28,9 +28,9 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const enhancers = [];
 enhancers.push(
   process.env.ifOpenActionLogger === 'true'
-    ? applyMiddleware(thunk, routerMiddleware(history))
-    : applyMiddleware(thunk, routerMiddleware(history), createLogger({ duration: true, diff: true}))
-  );
+    ? applyMiddleware(thunk, routerMiddleware(history), createLogger({ duration: true, diff: true}))
+    : applyMiddleware(thunk, routerMiddleware(history))
+);
 
 //createStore
 const store = createStore(
