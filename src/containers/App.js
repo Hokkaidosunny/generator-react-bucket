@@ -1,15 +1,16 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import {Route} from 'react-router';
+import CounterPage from './CounterPage.js';
+import HomePage from './HomePage.js';
 import '../style/app.scss';
 
 class App extends Component {
-  static propTypes = {
-    page: PropTypes.element
-  };
-
   render() {
     return (
       <div id='app'>
-        {this.props.page}
+        <Route exact path="/" component={HomePage} />
+        <Route path="/count" component={CounterPage} />
       </div>
     );
   }

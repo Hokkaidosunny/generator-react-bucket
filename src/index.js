@@ -1,54 +1,45 @@
-/** how it works
-  React
-    ↓
-  react-redux
-    ↓
-  redux → applyMiddleware(thunk)
-    ↓
-  react-router-redux
-    ↓
-  history
-    ↓
-  react-router
-*/
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
 import thunk from 'redux-thunk';  //use it for async action
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
-import { Router, hashHistory } from 'react-router';
-import reducers from './reducers/index.js';
-import routes from './routes.js';
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import createHistory from 'history/createHashHistory';
+import {Route} from 'react-router';
+import {createLogger} from 'redux-logger'; //log
 
-//reducer
-const reducer = combineReducers({
-  ...reducers,
-  routing: routerReducer
-});
+import reducers from './reducers/index.js';
+import App from './containers/App.js';
+
+//history
+const history = createHistory();
 
 //use chrome extension
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 //enhancers
 const enhancers = [];
-enhancers.push(applyMiddleware(thunk));
+enhancers.push(applyMiddleware(
+  thunk,
+  routerMiddleware(history),
+  createLogger({ duration: true, diff: true}),
+));
 
 //createStore
 const store = createStore(
-  reducer,
+  combineReducers({
+    ...reducers,
+    router: routerReducer
+  }),
   composeEnhancers(...enhancers)
 );
 
-const history = syncHistoryWithStore(hashHistory, store);
-
 ReactDOM.render(
   <Provider store={store}>
-    <div>
-      <Router history={history}>
-        {routes}
-      </Router>
-    </div>
+    <ConnectedRouter history={history}>
+      <Route path='/' component={App} />
+    </ConnectedRouter>
   </Provider>,
-  document.getElementById('root'));
+  document.getElementById('root')
+);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
 class HomePage extends Component {
 
@@ -8,7 +8,7 @@ class HomePage extends Component {
       <div>
         this is home
         <div>
-          <Link to='/counter'>go to counter page</Link>
+          {/* <Link to='/counter'>go to counter page</Link> */}
         </div>
       </div>
     );

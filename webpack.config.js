@@ -68,6 +68,6 @@ module.exports = {
       }
     ]
   },
-  devtool: isDev ? 'cheap-module-source-map' : 'source-map',
+  devtool: isDev ? 'inline-source-map' : 'source-map',
   plugins: getPlugins()
 };

@@ -1,18 +1,19 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Counter extends Component {
   static propTypes = {
     counter: PropTypes.number,
-    onIncrement: PropTypes.func,
-    onDecrement: PropTypes.func
+    increment: PropTypes.func,
+    decrement: PropTypes.func
   };
 
   handleIncrement = () => {
-    this.props.onIncrement();
+    this.props.increment();
   }
 
   handledecrement = () => {
-    this.props.onDecrement();
+    this.props.decrement();
   }
 
   render() {

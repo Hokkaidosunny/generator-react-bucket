@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { increment, decrement } from '../actions/counter.js';
 import { incrementWaitOneSeconds } from '../actions/asyncActions.js';
@@ -8,8 +9,9 @@ import '../style/counterpage.scss';
 class CounterPage extends Component {
   static propTypes = {
     counter: PropTypes.number,
-    onIncrement: PropTypes.func,
-    onDecrement: PropTypes.func
+    increment: PropTypes.func,
+    decrement: PropTypes.func,
+    incrementWaitOneSeconds: PropTypes.func,
   };
 
   render() {
@@ -28,15 +30,8 @@ function mapStateToProps(state) {
   };
 }
 
-// bind actions to App component's props
-function mapDispatchToProps(dispatch) {
-  return {
-    onIncrement: () => dispatch(incrementWaitOneSeconds()),
-    onDecrement: () => dispatch(decrement())
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CounterPage);
+export default connect(mapStateToProps, {
+  increment,
+  decrement,
+  incrementWaitOneSeconds
+})(CounterPage);
