@@ -5,12 +5,18 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
 import thunk from 'redux-thunk';  //use it for async action
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
-import createHistory from 'history/createHashHistory';
+import createHistory from 'history/createBrowserHistory';
 import {Route} from 'react-router';
 import {createLogger} from 'redux-logger'; //log
 
 import reducers from './reducers/index.js';
 import App from './containers/App.js';
+
+console.log(`
+  isDev: ${process.env.isDev}
+  isPro: ${process.env.isPro}
+  ifOpenActionLogger: ${process.env.ifOpenActionLogger}
+`);
 
 //history
 const history = createHistory();
@@ -20,11 +26,11 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 //enhancers
 const enhancers = [];
-enhancers.push(applyMiddleware(
-  thunk,
-  routerMiddleware(history),
-  createLogger({ duration: true, diff: true}),
-));
+enhancers.push(
+  process.env.ifOpenActionLogger === 'true'
+    ? applyMiddleware(thunk, routerMiddleware(history))
+    : applyMiddleware(thunk, routerMiddleware(history), createLogger({ duration: true, diff: true}))
+  );
 
 //createStore
 const store = createStore(

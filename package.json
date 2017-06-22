@@ -3,20 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Hokkaidosunny/react-bucket.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Hokkaidosunny/react-bucket/issues"
-  },
-  "homepage": "https://github.com/Hokkaidosunny/react-bucket#readme",
   "scripts": {
-    "start": "NODE_ENV=dev webpack-dev-server --host 0.0.0.0 --port 4000 --inline --hot",
-    "build": "rm -rf build && NODE_ENV=pro webpack -p --progress --colors"
+    "dev": "webpack-dev-server --host 0.0.0.0 --inline --hot --config ./dev/webpack.config.dev.babel.js",
+    "build": "rm -rf build && webpack -p --progress --colors --config ./dev/webpack.config.pro.babel.js"
   },
   "dependencies": {
     "history": "^4.6.3",
