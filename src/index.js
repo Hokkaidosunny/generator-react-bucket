@@ -30,11 +30,17 @@ const epicMiddleware = createEpicMiddleware(rootEpic);
 
 //enhancers
 const enhancers = [];
-enhancers.push(
-  process.env.ifOpenActionLogger === 'true'
-    ? applyMiddleware(epicMiddleware, routerMiddleware(history), createLogger({ duration: true, diff: true}))
-    : applyMiddleware(epicMiddleware, routerMiddleware(history))
-);
+
+//middlewares
+const middlewares = [
+  epicMiddleware,
+  routerMiddleware(history)
+];
+if (process.env.ifOpenActionLogger) {
+  middlewares.push(createLogger({ duration: true, diff: true}));
+}
+
+enhancers.push(applyMiddleware(...middlewares));
 
 //createStore
 const store = createStore(
