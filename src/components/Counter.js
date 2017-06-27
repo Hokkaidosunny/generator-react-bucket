@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 class Counter extends Component {
   static propTypes = {
     counter: PropTypes.number,
-    increment: PropTypes.func,
+    asyncIncrement: PropTypes.func,
     decrement: PropTypes.func
   };
 
   handleIncrement = () => {
-    this.props.increment();
+    this.props.asyncIncrement();
   }
 
   handledecrement = () => {

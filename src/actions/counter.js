@@ -1,6 +1,6 @@
-export function increment() {
+export function asyncIncrement() {
   return {
-    type: 'INCREMENT'
+    type: 'ASYNC_INCREMENT'
   };
 }
 

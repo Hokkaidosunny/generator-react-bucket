@@ -1,22 +1,24 @@
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
-import thunk from 'redux-thunk';  //use it for async action
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
-import {Route} from 'react-router';
-import {createLogger} from 'redux-logger'; //log
-
-import reducers from './reducers/index.js';
-import App from './containers/App.js';
-
 console.log(`
   isDev: ${process.env.isDev}
   isPro: ${process.env.isPro}
   ifOpenActionLogger: ${process.env.ifOpenActionLogger}
 `);
+//official
+import 'rxjs';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
+// import thunk from 'redux-thunk';  //use it for async action
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import createHistory from 'history/createBrowserHistory';
+import {Route} from 'react-router';
+import {createLogger} from 'redux-logger'; //log
+import { createEpicMiddleware } from 'redux-observable';
+//custom
+import reducers from './reducers/index.js';
+import App from './containers/App.js';
+import rootEpic from './epics/index.js';
 
 //history
 const history = createHistory();
@@ -24,12 +26,14 @@ const history = createHistory();
 //use chrome extension
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const epicMiddleware = createEpicMiddleware(rootEpic);
+
 //enhancers
 const enhancers = [];
 enhancers.push(
   process.env.ifOpenActionLogger === 'true'
-    ? applyMiddleware(thunk, routerMiddleware(history), createLogger({ duration: true, diff: true}))
-    : applyMiddleware(thunk, routerMiddleware(history))
+    ? applyMiddleware(epicMiddleware, routerMiddleware(history), createLogger({ duration: true, diff: true}))
+    : applyMiddleware(epicMiddleware, routerMiddleware(history))
 );
 
 //createStore

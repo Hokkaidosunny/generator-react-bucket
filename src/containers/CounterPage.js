@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { increment, decrement } from '../actions/counter.js';
-import { incrementWaitOneSeconds } from '../actions/asyncActions.js';
+import { asyncIncrement, decrement } from '../actions/counter.js';
 import Counter from '../components/Counter.js';
 import '../style/counterpage.scss';
 
@@ -31,7 +30,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  increment,
   decrement,
-  incrementWaitOneSeconds
+  asyncIncrement
 })(CounterPage);
