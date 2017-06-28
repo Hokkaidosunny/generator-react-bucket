@@ -1,32 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {asyncIncreasement, decreasement} from '../actions/counter.js';
 
 class Counter extends Component {
   static propTypes = {
     counter: PropTypes.number,
-    asyncIncrement: PropTypes.func,
-    decrement: PropTypes.func
+    asyncIncreasement: PropTypes.func,
+    decreasement: PropTypes.func
   };
-
-  handleIncrement = () => {
-    this.props.asyncIncrement();
-  }
-
-  handledecrement = () => {
-    this.props.decrement();
-  }
 
   render() {
     return (
       <div>
         <div>{this.props.counter}</div>
         <div>
-          <button className='btn' onClick={this.handleIncrement}> +1 </button>
-          <button className='btn' onClick={this.handledecrement}> -1 </button>
+          <button className='btn' onClick={this.props.asyncIncreasement}> +1 </button>
+          <button className='btn' onClick={this.props.decreasement}> -1 </button>
         </div>
       </div>
     );
   }
 }
 
-export default Counter;
+function mapStateToProps(state) {
+  return {
+    counter: state.counter
+  };
+}
+
+export default connect(mapStateToProps, {
+  asyncIncreasement,
+  decreasement
+})(Counter);

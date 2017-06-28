@@ -1,8 +1,10 @@
+import ActionTypes from '../const/ActionTypes.js';
+
 export default function counter(state = 0, action) {
   switch (action.type) {
-    case 'INCREMENT':
+    case ActionTypes.INCREASEMENT:
       return state + 1;
-    case 'DECREMENT':
+    case ActionTypes.DECREASEMENT:
       return state - 1;
     default:
       return state;
