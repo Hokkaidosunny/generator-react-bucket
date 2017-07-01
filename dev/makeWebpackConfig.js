@@ -4,8 +4,13 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 
 //entry
-function getEntry() {
-  return path.join(__dirname, '../src/index.js');
+function getEntry({ifMock}) {
+  const entry = [];
+  if (ifMock) {
+    entry.push(path.join(__dirname, '../src/mock/index.js'));
+  }
+  entry.push(path.join(__dirname, '../src/index.js'));
+  return entry;
 }
 
 //output
@@ -45,7 +50,7 @@ function getRules() {
 }
 
 //plugins
-function getPlugins({isDev, isPro, ifOpenActionLogger}) {
+function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
   const plugins = [
     new HtmlWebpackPlugin({
       title: 'index',
@@ -56,6 +61,7 @@ function getPlugins({isDev, isPro, ifOpenActionLogger}) {
     new webpack.DefinePlugin({
       'process.env.isDev': JSON.stringify(isDev),
       'process.env.isPro': JSON.stringify(isPro),
+      'process.env.ifMock': JSON.stringify(ifMock),
       'process.env.ifOpenActionLogger': JSON.stringify(ifOpenActionLogger),
     })
   ];
@@ -86,7 +92,7 @@ function getSourceMap({isDev}) {
  */
 function makeWebpackConfig(config) {
   return {
-    entry: getEntry(),
+    entry: getEntry(config),
     output: getOutput(),
     module: {
       rules: getRules()

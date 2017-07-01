@@ -1,6 +1,7 @@
 console.log(`
   isDev: ${process.env.isDev}
   isPro: ${process.env.isPro}
+  ifMock: ${process.env.ifMock}
   ifOpenActionLogger: ${process.env.ifOpenActionLogger}
 `);
 //official
