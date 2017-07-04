@@ -1,9 +1,9 @@
-## Feature
+## integration
 
-### SPA
-### Drag and drop
-### rxjs
-
+* redux
+* redux-observable
+* react-router
+* react-dnd
 
 ## Usage
 ```
