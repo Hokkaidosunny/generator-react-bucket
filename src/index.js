@@ -5,6 +5,7 @@ console.log(`
   ifOpenActionLogger: ${process.env.ifOpenActionLogger}
 `);
 //official
+import 'react-hot-loader/patch';
 import 'rxjs';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -16,6 +17,7 @@ import createHistory from 'history/createBrowserHistory';
 import {Route} from 'react-router';
 import {createLogger} from 'redux-logger'; //log
 import { createEpicMiddleware } from 'redux-observable';
+import { AppContainer } from 'react-hot-loader';
 //custom
 import reducers from './reducers/index.js';
 import App from './containers/App.js';
@@ -53,22 +55,23 @@ const store = createStore(
 );
 
 
-function renderApp(App) {
+function renderApp() {
   ReactDOM.render(
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <Route path='/' component={App} />
-      </ConnectedRouter>
-    </Provider>,
+    <AppContainer>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <Route path='/' component={App} />
+        </ConnectedRouter>
+      </Provider>
+    </AppContainer>,
     document.getElementById('root')
   );
 }
 
-renderApp(App);
+renderApp();
 
+
+//react hot loader
 if (module.hot) {
-   module.hot.accept('./containers/App.js', () => {
-     const App = require('./containers/App.js').default;
-     renderApp(App);
-   });
+   module.hot.accept('./containers/App.js', () => renderApp());
  }

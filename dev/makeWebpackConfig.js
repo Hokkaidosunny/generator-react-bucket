@@ -3,6 +3,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 import HappyPack from 'happypack';
+import getBabelrc from './getBabelrc.js';
 
 //entry
 function getEntry({ifMock, isDev, port = 4000}) {
@@ -58,6 +59,7 @@ function getRules({isDev}) {
 //plugins
 function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
   const plugins = [
+    new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       title: 'index',
       filename: 'index.html',
@@ -75,7 +77,10 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
   if (isDev) {
     plugins.push(
       new HappyPack({
-        loaders: ['babel-loader'],
+        loaders: [{
+          path: 'babel-loader',
+          query: getBabelrc({isDev})
+        }],
         threads: 4
       })
     );
