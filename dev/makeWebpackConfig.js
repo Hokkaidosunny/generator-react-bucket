@@ -2,6 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+import HappyPack from 'happypack';
 
 //entry
 function getEntry({ifMock}) {
@@ -24,7 +25,7 @@ function getOutput() {
 }
 
 //rules
-function getRules() {
+function getRules({isDev}) {
   return [
     {
       test: /\.css$/,
@@ -41,7 +42,7 @@ function getRules() {
     }, {
       test: /\.(js|jsx)$/,
       exclude: /node_modules/,
-      loader: "babel-loader"
+      loader: isDev ? 'happypack/loader' : 'babel-loader'
     }, {
       test: /\.(gif|jpg|jpeg|png|woff|svg|eot|ttf)$/,
       loader: 'url-loader?limit=50000'
@@ -65,6 +66,14 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
       'process.env.ifOpenActionLogger': JSON.stringify(ifOpenActionLogger),
     })
   ];
+
+  if (isDev) {
+    plugins.push(
+      new HappyPack({
+        loaders: ['babel-loader']
+      })
+    );
+  }
 
   if (isPro) {
     plugins.push(
@@ -95,7 +104,7 @@ function makeWebpackConfig(config) {
     entry: getEntry(config),
     output: getOutput(),
     module: {
-      rules: getRules()
+      rules: getRules(config)
     },
     devtool: getSourceMap(config),
     plugins: getPlugins(config),
