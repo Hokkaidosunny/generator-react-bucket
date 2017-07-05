@@ -5,8 +5,12 @@ import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 import HappyPack from 'happypack';
 
 //entry
-function getEntry({ifMock}) {
+function getEntry({ifMock, isDev, port = 4000}) {
   const entry = [];
+  if (isDev) {
+    entry.push(`webpack-dev-server/client?http://0.0.0.0:${port}`);
+    entry.push('webpack/hot/only-dev-server');
+  }
   if (ifMock) {
     entry.push(path.join(__dirname, '../src/mock/index.js'));
   }
@@ -17,7 +21,8 @@ function getEntry({ifMock}) {
 //output
 function getOutput() {
   return {
-    path: path.join(__dirname, '../dist/'),
+    path: path.join(__dirname, '../dist'),
+    publicPath: '/',
     filename: '[name].[hash].js',
     chunkFilename: '[name].[hash].js',
     sourceMapFilename: '[file].map'
@@ -70,7 +75,8 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
   if (isDev) {
     plugins.push(
       new HappyPack({
-        loaders: ['babel-loader']
+        loaders: ['babel-loader'],
+        threads: 4
       })
     );
   }
@@ -109,9 +115,10 @@ function makeWebpackConfig(config) {
     devtool: getSourceMap(config),
     plugins: getPlugins(config),
     devServer: {
+      publicPath: getOutput().publicPath,
       historyApiFallback: true, //任意的 404 响应都可能需要被替代为 index.html
       contentBase: path.join(__dirname, "../dist"),
-      port: 4000
+      port: config.port || 4000
     }
   };
 }

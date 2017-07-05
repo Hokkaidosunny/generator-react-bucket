@@ -52,11 +52,23 @@ const store = createStore(
   composeEnhancers(...enhancers)
 );
 
-ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Route path='/' component={App} />
-    </ConnectedRouter>
-  </Provider>,
-  document.getElementById('root')
-);
+
+function renderApp(App) {
+  ReactDOM.render(
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <Route path='/' component={App} />
+      </ConnectedRouter>
+    </Provider>,
+    document.getElementById('root')
+  );
+}
+
+renderApp(App);
+
+if (module.hot) {
+   module.hot.accept('./containers/App.js', () => {
+     const App = require('./containers/App.js').default;
+     renderApp(App);
+   });
+ }
