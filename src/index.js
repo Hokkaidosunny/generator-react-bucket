@@ -29,6 +29,7 @@ const history = createHistory();
 //use chrome extension
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+//redux-observable epics
 const epicMiddleware = createEpicMiddleware(rootEpic);
 
 //enhancers
@@ -39,6 +40,8 @@ const middlewares = [
   epicMiddleware,
   routerMiddleware(history)
 ];
+
+//action logger
 if (process.env.ifOpenActionLogger) {
   middlewares.push(createLogger({ duration: true, diff: true}));
 }
