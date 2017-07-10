@@ -25,7 +25,7 @@ function getOutput({isDev}) {
   return {
     path: path.join(__dirname, '../dist'),
     publicPath: '/',
-    filename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js',
+    filename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js', //chunkhash 生产使用，缓存vendor文件
     chunkFilename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js',
     sourceMapFilename: '[file].map'
   };
@@ -60,17 +60,28 @@ function getRules({isDev}) {
 //plugins
 function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
   const plugins = [
-    new HtmlWebpackPlugin({
-      title: 'index',
-      filename: 'index.html',
-      template: 'src/index.html',
-      inject: true
-    }),
     new webpack.DefinePlugin({
       'process.env.isDev': JSON.stringify(isDev),
       'process.env.isPro': JSON.stringify(isPro),
       'process.env.ifMock': JSON.stringify(ifMock),
       'process.env.ifOpenActionLogger': JSON.stringify(ifOpenActionLogger),
+    }),
+    //提取库代码
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "vendor",
+      minChunks: function(module) {
+        //去掉sass
+        if(module.resource && (/^.*\.(css|scss|sass)$/).test(module.resource)) {
+          return false;
+        }
+        //来自node_modules的文件统一打进vendor
+        return module.context && module.context.indexOf("node_modules") !== -1;
+      }
+    }),
+    //提前webpack运行时代码
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "manifest",
+      minChunks: Infinity
     }),
     //提取manifest
     new ChunkManifestPlugin({
@@ -78,22 +89,22 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
       manifestVariable: 'webpackManifest',
       inlineManifest: true
     }),
-    //提取库代码
-    new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      minChunks: function(module) {
-        return module.context && module.context.indexOf("node_modules") !== -1;
-      }
-    }),
-    //提前webpack运行时代码
-    new webpack.optimize.CommonsChunkPlugin({
-      name: "bootstrap",
-      minChunks: Infinity
+    new HtmlWebpackPlugin({
+      title: 'index',
+      filename: 'index.html',
+      template: 'src/index.html',
+      inject: true,
+      chunks: ['manifest', 'vendor', 'main'],
+      chunksSortMode: function (a, b) { //按顺序插入js文件
+        const orders = ['manifest', 'vendor', 'main'];
+        return orders.indexOf(a.names[0]) - orders.indexOf(b.names[0]);
+      },
     }),
   ];
 
   if (isDev) {
-    plugins.push(new webpack.NamedModulesPlugin()); //会增加文件大小
+    //文件变化时，输出文件名，会增加文件大小
+    plugins.push(new webpack.NamedModulesPlugin());
     plugins.push(
       new HappyPack({
         loaders: [{
