@@ -2,6 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
 import HappyPack from 'happypack';
 import getBabelrc from './getBabelrc.js';
 
@@ -20,12 +21,12 @@ function getEntry({ifMock, isDev, port = 4000}) {
 }
 
 //output
-function getOutput() {
+function getOutput({isDev}) {
   return {
     path: path.join(__dirname, '../dist'),
     publicPath: '/',
-    filename: '[name].[hash].js',
-    chunkFilename: '[name].[hash].js',
+    filename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js',
+    chunkFilename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js',
     sourceMapFilename: '[file].map'
   };
 }
@@ -59,7 +60,6 @@ function getRules({isDev}) {
 //plugins
 function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
   const plugins = [
-    new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
       title: 'index',
       filename: 'index.html',
@@ -71,10 +71,29 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
       'process.env.isPro': JSON.stringify(isPro),
       'process.env.ifMock': JSON.stringify(ifMock),
       'process.env.ifOpenActionLogger': JSON.stringify(ifOpenActionLogger),
-    })
+    }),
+    //提取manifest
+    new ChunkManifestPlugin({
+      filename: 'manifest.json',
+      manifestVariable: 'webpackManifest',
+      inlineManifest: true
+    }),
+    //提取库代码
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "vendor",
+      minChunks: function(module) {
+        return module.context && module.context.indexOf("node_modules") !== -1;
+      }
+    }),
+    //提前webpack运行时代码
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "bootstrap",
+      minChunks: Infinity
+    }),
   ];
 
   if (isDev) {
+    plugins.push(new webpack.NamedModulesPlugin()); //会增加文件大小
     plugins.push(
       new HappyPack({
         loaders: [{
@@ -113,14 +132,14 @@ function getSourceMap({isDev}) {
 function makeWebpackConfig(config) {
   return {
     entry: getEntry(config),
-    output: getOutput(),
+    output: getOutput(config),
     module: {
       rules: getRules(config)
     },
     devtool: getSourceMap(config),
     plugins: getPlugins(config),
     devServer: {
-      publicPath: getOutput().publicPath,
+      publicPath: getOutput(config).publicPath,
       historyApiFallback: true, //任意的 404 响应都可能需要被替代为 index.html
       contentBase: path.join(__dirname, "../dist"),
       port: config.port || 4000

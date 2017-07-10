@@ -7,12 +7,19 @@ class HomePage extends Component {
   render() {
     return (
       <div className='home-page' onClick={this.props.fetchNumbers}>
-        this is home page6
+        this is home page2
       </div>
     );
   }
 }
 
-export default connect(null, {
+function hoc(C) {
+  function Hoc() {
+    return <C />;
+  }
+  return Hoc;
+}
+
+export default hoc(connect(null, {
   fetchNumbers
-})(HomePage);
+})(HomePage));

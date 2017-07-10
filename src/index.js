@@ -76,5 +76,5 @@ renderApp();
 
 //react hot loader
 if (module.hot) {
-   module.hot.accept('./containers/App.js', () => renderApp());
- }
+  module.hot.accept('./containers/App.js', () => renderApp());
+}
