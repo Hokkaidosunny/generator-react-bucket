@@ -3,6 +3,7 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HappyPack from 'happypack';
 import getBabelrc from './getBabelrc.js';
 
@@ -32,20 +33,19 @@ function getOutput({isDev}) {
 }
 
 //rules
-function getRules({isDev}) {
+function getRules({isDev, isPro}) {
   return [
     {
       test: /\.css$/,
       loader: 'style-loader!css-loader'
     }, {
       test: /\.(scss|sass)$/,
-      use: [{
-        loader: 'style-loader'
-      }, {
-        loader: 'css-loader'
-      }, {
-        loader: 'sass-loader'
-      }]
+      use: isDev
+        ? ['style-loader', 'css-loader', 'sass-loader']
+        : ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
     }, {
       test: /\.(js|jsx)$/,
       exclude: /node_modules/,
@@ -117,6 +117,7 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
   }
 
   if (isPro) {
+    plugins.push(new ExtractTextPlugin('[name].[contenthash].css'));
     plugins.push(
       new UglifyJSPlugin({
         sourceMap: true,

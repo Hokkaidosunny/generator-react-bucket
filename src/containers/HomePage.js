@@ -7,7 +7,7 @@ class HomePage extends Component {
   render() {
     return (
       <div className='home-page' onClick={this.props.fetchNumbers}>
-        this is home page2
+        this is home page6
       </div>
     );
   }
