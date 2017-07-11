@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import AutoDllPlugin from 'autodll-webpack-plugin';
 import HappyPack from 'happypack';
 import getBabelrc from './getBabelrc.js';
 
@@ -33,7 +34,7 @@ function getOutput({isDev}) {
 }
 
 //rules
-function getRules({isDev, isPro}) {
+function getRules({isDev}) {
   return [
     {
       test: /\.css$/,
@@ -59,35 +60,12 @@ function getRules({isDev, isPro}) {
 
 //plugins
 function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
-  const plugins = [
+  let plugins = [
     new webpack.DefinePlugin({
       'process.env.isDev': JSON.stringify(isDev),
       'process.env.isPro': JSON.stringify(isPro),
       'process.env.ifMock': JSON.stringify(ifMock),
       'process.env.ifOpenActionLogger': JSON.stringify(ifOpenActionLogger),
-    }),
-    //提取库代码
-    new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      minChunks: function(module) {
-        //去掉sass
-        if(module.resource && (/^.*\.(css|scss|sass)$/).test(module.resource)) {
-          return false;
-        }
-        //来自node_modules的文件统一打进vendor
-        return module.context && module.context.indexOf("node_modules") !== -1;
-      }
-    }),
-    //提前webpack运行时代码
-    new webpack.optimize.CommonsChunkPlugin({
-      name: "manifest",
-      minChunks: Infinity
-    }),
-    //提取manifest
-    new ChunkManifestPlugin({
-      filename: 'manifest.json',
-      manifestVariable: 'webpackManifest',
-      inlineManifest: true
     }),
     new HtmlWebpackPlugin({
       title: 'index',
@@ -103,9 +81,18 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
   ];
 
   if (isDev) {
-    //文件变化时，输出文件名，会增加文件大小
-    plugins.push(new webpack.NamedModulesPlugin());
-    plugins.push(
+    plugins = plugins.concat([
+      //文件变化时，输出文件名，会增加文件大小
+      new webpack.NamedModulesPlugin(),
+      //生成dll文件
+      new AutoDllPlugin({
+        inject: true, // will inject the DLL bundles to index.html
+        filename: '[name].[hash].js',
+        entry: {
+          vendor: require('./vendorModules.js')
+        }
+      }),
+      //HappyPack 打包
       new HappyPack({
         loaders: [{
           path: 'babel-loader',
@@ -113,12 +100,37 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
         }],
         threads: 4
       })
-    );
+    ]);
   }
 
   if (isPro) {
-    plugins.push(new ExtractTextPlugin('[name].[contenthash].css'));
-    plugins.push(
+    plugins = plugins.concat([
+      //提取库代码
+      new webpack.optimize.CommonsChunkPlugin({
+        name: "vendor",
+        minChunks: function(module) {
+          //去掉sass
+          if(module.resource && (/^.*\.(css|scss|sass)$/).test(module.resource)) {
+            return false;
+          }
+          //来自node_modules的文件统一打进vendor
+          return module.context && module.context.indexOf("node_modules") !== -1;
+        }
+      }),
+      //提前webpack运行时代码
+      new webpack.optimize.CommonsChunkPlugin({
+        name: "manifest",
+        minChunks: Infinity
+      }),
+      //提取manifest
+      new ChunkManifestPlugin({
+        filename: 'manifest.json',
+        manifestVariable: 'webpackManifest',
+        inlineManifest: true
+      }),
+      //提前css
+      new ExtractTextPlugin('[name].[contenthash].css'),
+      //压缩
       new UglifyJSPlugin({
         sourceMap: true,
         compress: {
@@ -126,7 +138,7 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
           drop_console: true  //no console
         }
       })
-    );
+    ]);
   }
   return plugins;
 }
