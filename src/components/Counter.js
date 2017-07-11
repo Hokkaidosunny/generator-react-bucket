@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {asyncIncreasement, decreasement} from '../actions/counter.js';
+import {asyncIncreasement, decreasement, increasement} from '../actions/counter.js';
 
 class Counter extends Component {
   static propTypes = {
@@ -15,7 +15,7 @@ class Counter extends Component {
       <div>
         <div>{this.props.counter}</div>
         <div>
-          <button className='btn' onClick={this.props.asyncIncreasement}> +1 </button>
+          <button className='btn' onClick={this.props.increasement}> +1 </button>
           <button className='btn' onClick={this.props.decreasement}> -1 </button>
         </div>
       </div>
@@ -31,5 +31,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   asyncIncreasement,
-  decreasement
+  decreasement,
+  increasement
 })(Counter);

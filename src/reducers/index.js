@@ -1,5 +1,6 @@
-import counter from './counter.js';
+import { handleActions } from 'redux-actions';
+import counterReducers from './counterReducers.js';
 
 export default {
-  counter
+  counter: handleActions(counterReducers, 0)
 };
