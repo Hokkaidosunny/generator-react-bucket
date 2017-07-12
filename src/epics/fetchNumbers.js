@@ -28,7 +28,13 @@ function fetchNumbers(action$) {
       Observable.concat(
         Observable.of(fetchNumbersStart()),
         Observable.fromPromise(fetchApi({ url: 'http://127.0.0.1:4000/numbers' }))
-          .map(fetchNumbersSuccess)
+          .mergeMap(res => {
+            return Observable.concat(
+              Observable.of({type: '1'}),
+              Observable.of({type: '2'}),
+              Observable.of({type: '3'}),
+            );
+          })
       )
       .catch(err => Observable.of(fetchNumbersFail(err)))
     );
