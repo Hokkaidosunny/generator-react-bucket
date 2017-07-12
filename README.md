@@ -1,9 +1,10 @@
 ## integration
 
-* redux
 * redux-observable
-* react-router
-* react-dnd
+* router
+* action log
+* mock
+* best webpack config
 
 ## Usage
 ```
