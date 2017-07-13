@@ -52,8 +52,22 @@ function getRules({isDev}) {
       exclude: /node_modules/,
       loader: isDev ? 'happypack/loader' : 'babel-loader'
     }, {
-      test: /\.(gif|jpg|jpeg|png|woff|svg|eot|ttf)$/,
-      loader: 'url-loader?limit=50000'
+      test: /\.(gif|jpg|jpeg|png|svg)$/,
+      use: {
+        loader: 'url-loader',
+        options: {
+          name: 'imgs/[name].[hash].[ext]',
+          limit: 50000,
+        },
+      }
+    }, {
+      test: /\.(woff|eot|ttf)$/,
+      use: {
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name].[hash].[ext]'
+        },
+      }
     }
   ];
 }
