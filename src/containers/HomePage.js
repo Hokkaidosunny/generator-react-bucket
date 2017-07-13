@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {fetchNumbers} from '../actions/fetch.js';
 
+
+@connect(null, {
+  fetchNumbers
+})
 class HomePage extends Component {
 
   render() {
@@ -15,13 +19,4 @@ class HomePage extends Component {
   }
 }
 
-function hoc(C) {
-  function Hoc() {
-    return <C />;
-  }
-  return Hoc;
-}
-
-export default hoc(connect(null, {
-  fetchNumbers
-})(HomePage));
+export default HomePage;

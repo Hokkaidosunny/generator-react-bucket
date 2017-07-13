@@ -3,6 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {asyncIncreasement, decreasement, increasement} from '../actions/counter.js';
 
+
+function mapStateToProps(state) {
+  return {
+    counter: state.counter
+  };
+}
+
+@connect(mapStateToProps, {
+  asyncIncreasement,
+  decreasement,
+  increasement
+})
 class Counter extends Component {
   static propTypes = {
     counter: PropTypes.number,
@@ -23,14 +35,4 @@ class Counter extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    counter: state.counter
-  };
-}
-
-export default connect(mapStateToProps, {
-  asyncIncreasement,
-  decreasement,
-  increasement
-})(Counter);
+export default Counter;

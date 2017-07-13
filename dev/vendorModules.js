@@ -15,6 +15,8 @@ module.exports = [
   "redux-observable",
   "reselect",
   "rxjs",
+  "i18next",
+  "react-i18next",
   //dev
   "babel-core",
   "babel-loader",
@@ -35,4 +37,5 @@ module.exports = [
   "webpack",
   "webpack-dev-server",
   "webpack-sources",
+  "babel-plugin-transform-decorators-legacy",
 ];

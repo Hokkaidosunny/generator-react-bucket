@@ -17,10 +17,12 @@ import {Route} from 'react-router';
 import {createLogger} from 'redux-logger'; //log
 import { createEpicMiddleware } from 'redux-observable';
 import { AppContainer } from 'react-hot-loader';
+import { I18nextProvider } from 'react-i18next';
 //custom
-import reducers from './reducers/index.js';
 import App from './containers/App.js';
 import rootEpic from './epics/index.js';
+import reducers from './reducers/index.js';
+import i18n from './local/i18n.js';
 
 //history
 const history = createHistory();
@@ -60,11 +62,13 @@ const store = createStore(
 function renderApp() {
   ReactDOM.render(
     <AppContainer>
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <Route path='/' component={App} />
-        </ConnectedRouter>
-      </Provider>
+      <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+          <ConnectedRouter history={history}>
+            <Route path='/' component={App} />
+          </ConnectedRouter>
+        </Provider>
+      </I18nextProvider>
     </AppContainer>,
     document.getElementById('root')
   );

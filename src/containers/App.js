@@ -9,6 +9,7 @@ import HomePage from './HomePage.js';
 import DragPage from './DragPage.js';
 import Demo from './Demo.js';
 import Students from './Students.js';
+import Translate from './Translate.js';
 import '../style/app.scss';
 
 class App extends Component {
@@ -20,6 +21,7 @@ class App extends Component {
         <Route path="/count" component={CounterPage} />
         <Route path="/demo" component={Demo} />
         <Route path="/students" component={Students} />
+        <Route path="/ts" component={Translate} />
       </div>
     );
   }

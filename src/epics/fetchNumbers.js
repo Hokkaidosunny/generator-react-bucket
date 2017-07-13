@@ -22,9 +22,9 @@ function fetchNumbersFail(error) {
   };
 }
 
-function fetchNumbers(action$) {
+function fetchNumbers(action$, store) {
   return action$.ofType(ActionTypes.FETCH_NUMBERS)
-    .mergeMap(() =>
+    .switchMap(() =>
       Observable.concat(
         Observable.of(fetchNumbersStart()),
         Observable.fromPromise(fetchApi({ url: 'http://127.0.0.1:4000/numbers' }))

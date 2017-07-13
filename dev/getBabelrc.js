@@ -7,6 +7,7 @@ module.exports = function ({isDev = true}) {
       'stage-0'
     ],
     plugins: [
+      'transform-decorators-legacy',
       'transform-runtime',
       'lodash'
     ]
