@@ -19,7 +19,10 @@ function getEntry({ifMock, isDev, port = 4000}) {
     entry.push(path.join(__dirname, '../src/mock/index.js'));
   }
   entry.push(path.join(__dirname, '../src/index.js'));
-  return entry;
+
+  return {
+    'main': entry
+  };
 }
 
 //output
@@ -143,7 +146,10 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
         inlineManifest: true
       }),
       //提前css
-      new ExtractTextPlugin('[name].[contenthash].css'),
+      new ExtractTextPlugin({
+        filename: getPath => getPath('css/[name].[contenthash].css').replace('css/js', 'css'),
+        allChunks: true
+      }),
       //压缩
       new UglifyJSPlugin({
         sourceMap: true,
