@@ -10,9 +10,10 @@ class HomePage extends Component {
 
   render() {
     return (
-      <div className='home-page' onClick={this.props.fetchNumbers}>
+      <div className='home-page'>
         <div>
           this is home
+          <a onClick={this.props.fetchNumbers}>click me</a>
         </div>
       </div>
     );

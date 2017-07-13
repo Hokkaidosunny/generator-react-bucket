@@ -12,7 +12,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
 import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'history/createHashHistory';
 import {Route} from 'react-router';
 import {createLogger} from 'redux-logger'; //log
 import { createEpicMiddleware } from 'redux-observable';
