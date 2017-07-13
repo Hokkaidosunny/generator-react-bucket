@@ -21,7 +21,7 @@ function getEntry({ifMock, isDev, port = 4000}) {
   entry.push(path.join(__dirname, '../src/index.js'));
 
   return {
-    'main': entry
+    'js/main': entry
   };
 }
 
@@ -83,22 +83,17 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
       'process.env.isPro': JSON.stringify(isPro),
       'process.env.ifMock': JSON.stringify(ifMock),
       'process.env.ifOpenActionLogger': JSON.stringify(ifOpenActionLogger),
-    }),
-    new HtmlWebpackPlugin({
-      title: 'index',
-      filename: 'index.html',
-      template: 'src/index.html',
-      inject: true,
-      chunks: ['manifest', 'vendor', 'main'],
-      chunksSortMode: function (a, b) { //按顺序插入js文件
-        const orders = ['manifest', 'vendor', 'main'];
-        return orders.indexOf(a.names[0]) - orders.indexOf(b.names[0]);
-      },
-    }),
+    })
   ];
 
   if (isDev) {
     plugins = plugins.concat([
+      new HtmlWebpackPlugin({
+        title: 'index',
+        filename: 'index.html',
+        template: 'src/index.html',
+        inject: true
+      }),
       //文件变化时，输出文件名，会增加文件大小
       new webpack.NamedModulesPlugin(),
       //生成dll文件
@@ -122,9 +117,20 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
 
   if (isPro) {
     plugins = plugins.concat([
+      new HtmlWebpackPlugin({
+        title: 'index',
+        filename: 'index.html',
+        template: 'src/index.html',
+        inject: true,
+        chunks: ['js/manifest', 'js/vendor', 'js/main'],
+        chunksSortMode: function (a, b) { //按顺序插入js文件
+          const orders = ['js/manifest', 'js/vendor', 'js/main'];
+          return orders.indexOf(a.names[0]) - orders.indexOf(b.names[0]);
+        },
+      }),
       //提取库代码
       new webpack.optimize.CommonsChunkPlugin({
-        name: "vendor",
+        name: "js/vendor",
         minChunks: function(module) {
           //去掉sass
           if(module.resource && (/^.*\.(css|scss|sass)$/).test(module.resource)) {
@@ -136,7 +142,7 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
       }),
       //提前webpack运行时代码
       new webpack.optimize.CommonsChunkPlugin({
-        name: "manifest",
+        name: "js/manifest",
         minChunks: Infinity
       }),
       //提取manifest
@@ -145,7 +151,7 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
         manifestVariable: 'webpackManifest',
         inlineManifest: true
       }),
-      //提前css
+      //提出css
       new ExtractTextPlugin({
         filename: getPath => getPath('css/[name].[contenthash].css').replace('css/js', 'css'),
         allChunks: true
