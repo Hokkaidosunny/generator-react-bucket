@@ -4,7 +4,17 @@ import { connect } from 'react-redux';
 import {getMaleStudents} from '../selectors/getMaleStudents.js';
 import {addStudent} from '../actions/students.js';
 
+const mapStateToProps = (state) => {
+  return {
+    maleStudents: getMaleStudents(state)
+  };
+};
 
+const mapActionToProps = {
+  addStudent
+};
+
+@connect(mapStateToProps, mapActionToProps)
 class Students extends Component {
 
   addStudent = () => {
@@ -34,12 +44,4 @@ class Students extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    maleStudents: getMaleStudents(state)
-  };
-}
-
-export default connect(mapStateToProps, {
-  addStudent
-})(Students);
+export default Students;

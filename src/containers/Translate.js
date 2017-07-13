@@ -3,20 +3,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import {asyncIncreasement, decreasement, increasement} from '../actions/counter.js';
-import i18next from '../local/i18n.js';
+import i18next from '../local/i18next.js';
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return {
     counter: state.counter
   };
-}
+};
 
-@translate()
-@connect(mapStateToProps, {
+const mapActionToProps = {
   asyncIncreasement,
   decreasement,
   increasement
-})
+};
+
+@translate()
+@connect(mapStateToProps, mapActionToProps)
 class Translate extends Component {
 
   changeLanguage = (ln) => {

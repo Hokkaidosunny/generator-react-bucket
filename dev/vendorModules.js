@@ -38,4 +38,6 @@ module.exports = [
   "webpack-dev-server",
   "webpack-sources",
   "babel-plugin-transform-decorators-legacy",
+  "autoprefixer",
+  "postcss-loader"
 ];
