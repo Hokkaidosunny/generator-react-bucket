@@ -6,7 +6,7 @@ class CounterPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className='counter-page'>
         <Counter />
       </div>
     );
