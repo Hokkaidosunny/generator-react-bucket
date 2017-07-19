@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Route, Switch} from 'react-router';
-import { RouteTransition } from 'react-router-transition';
 
 import CounterPage from './CounterPage.js';
 import HomePage from './HomePage.js';
@@ -9,37 +8,16 @@ import DragPage from './DragPage.js';
 import Demo from './Demo.js';
 import Students from './Students.js';
 import Translate from './Translate.js';
+import RouteTransitionAnimation from '../components/RouteTransitionAnimation.js';
 import '../style/app.scss';
-
-
-const pushStateStyles = {
-  atEnter: {translateX: 100 },
-  atLeave: {translateX: -100 },
-  atActive: {translateX: 0 },
-  mapStyles: styles => ({ transform: `translateX(${styles.translateX}%)` })
-};
-
-const popStateStyles = {
-  atEnter: {translateX: -100 },
-  atLeave: {translateX: 100 },
-  atActive: {translateX: 0 },
-  mapStyles: styles => ({ transform: `translateX(${styles.translateX}%)` })
-};
-
 
 class App extends Component {
   render() {
-    console.log(this.props.history.action);
-    const styles = this.props.history.action === 'POP'
-      ? popStateStyles
-      : pushStateStyles;
-
     return (
       <div id='app'>
-        <RouteTransition
-          className='transition-wrapper'
+        <RouteTransitionAnimation
           pathname={this.props.location.pathname}
-          {...styles}
+          action={this.props.history.action}
           >
           <Switch key={this.props.location.key} location={this.props.location}>
             <Route exact path="/" component={HomePage} />
@@ -49,7 +27,7 @@ class App extends Component {
             <Route path="/students" component={Students} />
             <Route path="/ts" component={Translate} />
           </Switch>
-        </RouteTransition>
+        </RouteTransitionAnimation>
       </div>
     );
   }
