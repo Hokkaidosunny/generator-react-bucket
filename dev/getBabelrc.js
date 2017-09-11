@@ -8,7 +8,6 @@ module.exports = function ({isDev = true}) {
     ],
     plugins: [
       'transform-decorators-legacy',
-      'transform-runtime',
       'lodash'
     ]
   };

@@ -6,12 +6,16 @@
   background: transparent;
   line-height: normal; /*fix the input bug in moblie*/
   user-select: none;
-  font-family: "Microsoft YaHei", "微软雅黑","Helvetica Neue", Helvetica, "PingFang SC", "STHeitiSC-Light", "Tahoma",  Arial, sans-serif;
+  font-family: 'Microsoft YaHei', '微软雅黑', 'Helvetica Neue', Helvetica, 'PingFang SC', 'STHeitiSC-Light', 'Tahoma',  Arial, sans-serif;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-overflow-scrolling: touch;
 }
 
 html {
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
+  position: relative;
 }
 
 /**
@@ -57,12 +61,17 @@ a:active {
 img {
   border-style: none;
   max-width: 100%;
+  display: block;
 }
 
 ul,
 li,
 ol {
   list-style: none;
+}
+
+svg {
+  display: block;
 }
 
 canvas {

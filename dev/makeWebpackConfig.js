@@ -10,7 +10,7 @@ import getBabelrc from './getBabelrc.js';
 
 //entry
 function getEntry({ifMock, isDev, port = 4000}) {
-  const entry = [];
+  const entry = ['babel-polyfill'];
   if (isDev) {
     entry.push(`webpack-dev-server/client?http://0.0.0.0:${port}`);
     entry.push('webpack/hot/only-dev-server');
