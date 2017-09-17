@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import Counter from '../components/Counter.js';
-import '../style/counter-page.scss';
+import Counter from '../component/Counter';
 
 class CounterPage extends Component {
 

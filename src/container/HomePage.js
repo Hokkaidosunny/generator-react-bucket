@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {fetchNumbers} from '../actions/fetch.js';
 import {Link} from 'react-router-dom';
 import '../style/home-page.scss';
 
-@connect(null, {
-  fetchNumbers
-})
+@connect(null, {})
 class HomePage extends Component {
 
   render() {
