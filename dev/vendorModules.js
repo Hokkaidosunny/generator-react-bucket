@@ -1,10 +1,11 @@
 module.exports = [
+  "babel-polyfill",
   "history",
+  "immutable",
+  "isomorphic-fetch",
   "lodash",
   "prop-types",
   "react",
-  "react-dnd",
-  "react-dnd-html5-backend",
   "react-dom",
   "react-redux",
   "react-router",
@@ -13,5 +14,5 @@ module.exports = [
   "redux",
   "redux-actions",
   "redux-logger",
-  "reselect",
+  "reselect"
 ];

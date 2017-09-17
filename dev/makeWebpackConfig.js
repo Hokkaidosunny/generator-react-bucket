@@ -2,7 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
-import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
+import InlineChunkManifestHtmlWebpackPlugin from 'inline-chunk-manifest-html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import AutoDllPlugin from 'autodll-webpack-plugin';
 import HappyPack from 'happypack';
@@ -10,7 +10,7 @@ import getBabelrc from './getBabelrc.js';
 
 //entry
 function getEntry({ifMock, isDev, port = 4000}) {
-  const entry = ['babel-polyfill'];
+  const entry = ['babel-polyfill', 'isomorphic-fetch'];
   if (isDev) {
     entry.push(`webpack-dev-server/client?http://0.0.0.0:${port}`);
     entry.push('webpack/hot/only-dev-server');
@@ -76,14 +76,16 @@ function getRules({isDev}) {
 }
 
 //plugins
-function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
+function getPlugins(config) {
+  const {isDev, isPro} = config;
+
+  const envs = {};
+  for(const key in config) {
+    envs[`process.env.${key}`] = JSON.stringify(config[key]);
+  }
+
   let plugins = [
-    new webpack.DefinePlugin({
-      'process.env.isDev': JSON.stringify(isDev),
-      'process.env.isPro': JSON.stringify(isPro),
-      'process.env.ifMock': JSON.stringify(ifMock),
-      'process.env.ifOpenActionLogger': JSON.stringify(ifOpenActionLogger),
-    })
+    new webpack.DefinePlugin(envs)
   ];
 
   if (isDev) {
@@ -122,12 +124,14 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
         filename: 'index.html',
         template: 'src/index.html',
         inject: true,
-        chunks: ['js/manifest', 'js/vendor', 'js/main'],
+        chunks: ['js/runtime', 'js/vendor', 'js/main'],
         chunksSortMode: function (a, b) { //按顺序插入js文件
-          const orders = ['js/manifest', 'js/vendor', 'js/main'];
+          const orders = ['js/runtime', 'js/vendor', 'js/main'];
           return orders.indexOf(a.names[0]) - orders.indexOf(b.names[0]);
         },
       }),
+      new InlineChunkManifestHtmlWebpackPlugin(),
+      new webpack.HashedModuleIdsPlugin(),
       //提取库代码
       new webpack.optimize.CommonsChunkPlugin({
         name: "js/vendor",
@@ -142,14 +146,8 @@ function getPlugins({isDev, isPro, ifMock, ifOpenActionLogger}) {
       }),
       //提前webpack运行时代码
       new webpack.optimize.CommonsChunkPlugin({
-        name: "js/manifest",
+        name: "js/runtime",
         minChunks: Infinity
-      }),
-      //提取manifest
-      new ChunkManifestPlugin({
-        filename: 'manifest.json',
-        manifestVariable: 'webpackManifest',
-        inlineManifest: true
       }),
       //提出css
       new ExtractTextPlugin({
