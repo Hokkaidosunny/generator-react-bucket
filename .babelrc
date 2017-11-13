@@ -1,11 +1,10 @@
 {
   "presets": [
-    "es2015",
-    "react",
-    "stage-0"
-  ],
-  "plugins": [
-    "transform-decorators-legacy",
-    "lodash"
+    ["env", {
+      "targets": {
+        "node": "6.11.2"
+      },
+    }],
+    "react"
   ]
 }

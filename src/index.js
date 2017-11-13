@@ -3,56 +3,23 @@ import 'react-hot-loader/patch';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
-import createHistory from 'history/createHashHistory';
-import { Route } from 'react-router';
-import {createLogger} from 'redux-logger'; //log
+// import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+// import createHistory from 'history/createBrowserHistory';
 import { AppContainer } from 'react-hot-loader';
-//custom
-import App from './container/App';
-import reducers from './reducer';
+import routes from './routes';
+import configStore from './store/configStore';
+import {BrowserRouter} from 'react-router-dom';
 
-//history
-const history = createHistory();
-
-//use chrome extension
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-//enhancers
-const enhancers = [];
-
-//middlewares
-const middlewares = [
-  routerMiddleware(history)
-];
-
-//action logger
-if (process.env.ifOpenActionLogger) {
-  middlewares.push(createLogger({ duration: true, diff: true}));
-}
-
-enhancers.push(applyMiddleware(...middlewares));
-
-//createStore
-const store = createStore(
-  combineReducers({
-    ...reducers,
-    router: routerReducer
-  }),
-  composeEnhancers(...enhancers)
-);
-
+// 通过服务端注入的全局变量得到初始 state
+const preloadedState = JSON.parse(window.__INITIAL_STATE__) || {};
 
 function renderApp() {
   ReactDOM.render(
-    <AppContainer>
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <Route path='/' component={App} />
-        </ConnectedRouter>
-      </Provider>
-    </AppContainer>,
+    <Provider store={configStore(preloadedState)}>
+      <BrowserRouter>
+        {routes()}
+      </BrowserRouter>
+    </Provider>,
     document.getElementById('root')
   );
 }
@@ -62,5 +29,5 @@ renderApp();
 
 //react hot loader
 if (module.hot) {
-  module.hot.accept('./container/App.js', () => renderApp());
+  //module.hot.accept('./container/App.js', () => renderApp());
 }

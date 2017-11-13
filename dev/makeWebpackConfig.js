@@ -38,7 +38,7 @@ function getOutput({isDev}) {
 
 //rules
 function getRules({isDev}) {
-  return [
+  const rules = [
     {
       test: /\.css$/,
       loader: 'style-loader!css-loader'
@@ -50,10 +50,6 @@ function getRules({isDev}) {
           fallback: 'style-loader',
           use: ['css-loader', 'postcss-loader', 'sass-loader']
         })
-    }, {
-      test: /\.(js|jsx)$/,
-      exclude: /node_modules/,
-      loader: isDev ? 'happypack/loader' : 'babel-loader'
     }, {
       test: /\.(gif|jpg|jpeg|png|svg)$/,
       use: {
@@ -73,6 +69,22 @@ function getRules({isDev}) {
       }
     }
   ];
+
+  if (isDev) {
+    rules.push({
+      test: /\.(js|jsx)$/,
+      exclude: /node_modules/,
+      loader: 'happypack/loader'
+    });
+  } else {
+    rules.push({
+      test: /\.(js|jsx)$/,
+      loader: 'babel-loader',
+      options: getBabelrc({ifDevServer: false})
+    });
+  }
+
+  return rules;
 }
 
 //plugins
