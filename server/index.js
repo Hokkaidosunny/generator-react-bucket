@@ -5,6 +5,9 @@ import serve from 'koa-static';
 import bodyparser from 'koa-bodyparser';
 import views from 'koa-views';
 import router from './router';
+import webpackMiddleware from 'webpack-dev-middleware';
+import webpack from 'webpack';
+import config from '../dev/webpack.config.dev.babel.js';
 
 const app = new Koa();
 
@@ -20,12 +23,13 @@ app.use(serve(path.join(__dirname, '../dist')));
 // bodyparser
 app.use(bodyparser());
 
-// app.use(webpackMiddleware(webpack(config)));
+// dev server
+app.use(webpackMiddleware(webpack(config)));
 
 // router
-app
-  .use(router.routes())
-  .use(router.allowedMethods());
+// app
+//   .use(router.routes())
+//   .use(router.allowedMethods());
 
 app.listen(8000);
 

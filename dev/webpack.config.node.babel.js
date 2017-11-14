@@ -2,7 +2,7 @@ import path from 'path';
 import nodeExternals from 'webpack-node-externals';
 
 module.exports = {
-  entry: path.join(__dirname, '../server/index.js'),
+  entry: ['babel-polyfill', path.join(__dirname, '../server/index.js')],
 
   target: 'node',
 
@@ -22,7 +22,7 @@ module.exports = {
   },
 
   watch: true,
-  
+
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000,

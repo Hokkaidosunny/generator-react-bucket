@@ -8,6 +8,9 @@ import configStore from '../../src/store/configStore';
 
 const router = new Router();
 
+const ifDev = process.env.NODE_ENV === 'dev';
+console.log(process.env.NODE_ENV);
+
 router.get('*', async (ctx) => {
   console.log(ctx.url);
 
@@ -26,7 +29,7 @@ router.get('*', async (ctx) => {
     </Provider>
   );
 
-  await ctx.render('index', {
+  await ctx.render('index.dev', {
     html,
     preloadedState
   });

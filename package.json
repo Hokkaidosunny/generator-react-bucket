@@ -10,7 +10,7 @@
     "dev": "webpack-dev-server --host 0.0.0.0 --inline --hot --config ./dev/webpack.config.dev.babel.js",
     "build": "rm -rf dist && webpack -p --progress --colors --config ./dev/webpack.config.pro.babel.js",
     "watch:server": "webpack --progress --colors --config ./dev/webpack.config.node.babel.js",
-    "server": "npm run watch:server & nodemon server/server.bundle.js"
+    "server": "NODE_ENV=dev npm run watch:server & nodemon server/server.bundle.js"
   },
   "browserslist": [
     "iOS >= 8"

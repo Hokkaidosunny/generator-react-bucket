@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+	<div id="root"><%- html %></div>
+  <script>
+    try {
+      window.__INITIAL_STATE__ = <%- JSON.stringify(preloadedState) %>;
+    } catch (e) {
+      console.warn('error in getting server redux data');
+    }
+  </script>
+  <script type="text/javascript" src="/js/vendor.js"></script>
+  <script type="text/javascript" src="/js/main.js"></script>
+</body>
+</html>
