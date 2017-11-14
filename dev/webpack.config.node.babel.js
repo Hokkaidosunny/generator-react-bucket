@@ -1,8 +1,13 @@
 import path from 'path';
 import nodeExternals from 'webpack-node-externals';
+import getBabelrc from './getBabelrc';
 
 module.exports = {
-  entry: ['babel-polyfill', path.join(__dirname, '../server/index.js')],
+  entry: [
+    'babel-polyfill',
+    'isomorphic-fetch',
+    path.join(__dirname, '../server/index.js')
+  ],
 
   target: 'node',
 
@@ -38,22 +43,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
-        options: {
-          babelrc: false,
-          presets: [
-            ["env", {
-              "targets": {
-                "node": "current"
-              },
-            }],
-            'react',
-            'stage-0'
-          ],
-          plugins: [
-            'transform-decorators-legacy',
-            'lodash'
-          ]
-        }
+        options: getBabelrc('node')
       }
     ]
   }

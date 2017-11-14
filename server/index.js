@@ -5,33 +5,9 @@ import serve from 'koa-static';
 import bodyparser from 'koa-bodyparser';
 import views from 'koa-views';
 import router from './router';
-import koaWebpack from 'koa-webpack';
-import webpack from 'webpack';
-import config from '../dev/webpack.config.dev.babel.js';
+import webpackDevServer from './webpack-dev-server';
 
 const app = new Koa();
-
-const compiler = webpack(config);
-const koaMiddlewareInstance = koaWebpack({
-  compiler,
-  config,
-  dev: {
-    noInfo: false,
-    quiet: false,
-    lazy: false,
-    watchOptions: {
-      aggregateTimeout: 300,
-      poll: true
-    },
-    publicPath: "/dist/",
-    index: "index.html",
-    stats: {
-      colors: true
-    },
-    reporter: null,
-    serverSideRender: true,
-  }
-});
 
 // 模板引擎
 app.use(views(path.join(__dirname, './template'), { extension: 'ejs' }));
@@ -46,9 +22,7 @@ app.use(bodyparser());
 app.use(serve(path.join(__dirname, '../dist')));
 
 // dev server
-app.use(koaMiddlewareInstance);
-
-// hot
+app.use(webpackDevServer);
 
 // router
 app

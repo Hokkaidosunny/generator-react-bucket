@@ -10,11 +10,8 @@
     "dev": "webpack-dev-server --host 0.0.0.0 --inline --hot --config ./dev/webpack.config.dev.babel.js",
     "build": "rm -rf dist && webpack -p --progress --colors --config ./dev/webpack.config.pro.babel.js",
     "watch:server": "webpack --progress --colors --config ./dev/webpack.config.node.babel.js",
-    "server": "NODE_ENV=dev npm run watch:server & nodemon server/server.bundle.js"
+    "server": "concurrently \"npm run watch:server\" \"nodemon server/server.bundle.js\""
   },
-  "browserslist": [
-    "iOS >= 8"
-  ],
   "dependencies": {
     "@koa/cors": "^2.2.1",
     "babel-polyfill": "^6.26.0",
@@ -54,6 +51,7 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "concurrently": "^3.5.0",
     "css-loader": "^0.28.7",
     "eslint": "^4.7.0",
     "eslint-plugin-react": "^7.3.0",
