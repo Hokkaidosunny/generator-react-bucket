@@ -14,6 +14,21 @@ module.exports = {
   // keep node_module paths out of the bundle
   externals: [nodeExternals()],
 
+  context: __dirname,
+
+  node: {
+    __filename: false,
+    __dirname: false
+  },
+
+  watch: true,
+  
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000,
+    ignored: /node_modules/
+  },
+
   module: {
     rules: [
       {

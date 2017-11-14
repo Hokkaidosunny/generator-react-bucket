@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -85,50 +85,159 @@ module.exports = require("react-router-dom");
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("redux-actions");
+module.exports = require("koa-router");
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("redux");
+module.exports = require("redux-actions");
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("redux");
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _path = __webpack_require__(6);
+var _path = __webpack_require__(7);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _koa = __webpack_require__(7);
+var _koa = __webpack_require__(8);
 
 var _koa2 = _interopRequireDefault(_koa);
 
-var _cors = __webpack_require__(8);
+var _cors = __webpack_require__(9);
 
 var _cors2 = _interopRequireDefault(_cors);
 
-var _koaStatic = __webpack_require__(9);
+var _koaStatic = __webpack_require__(10);
 
 var _koaStatic2 = _interopRequireDefault(_koaStatic);
 
-var _koaBodyparser = __webpack_require__(10);
+var _koaBodyparser = __webpack_require__(11);
 
 var _koaBodyparser2 = _interopRequireDefault(_koaBodyparser);
-
-var _koaRouter = __webpack_require__(11);
-
-var _koaRouter2 = _interopRequireDefault(_koaRouter);
 
 var _koaViews = __webpack_require__(12);
 
 var _koaViews2 = _interopRequireDefault(_koaViews);
 
-var _server = __webpack_require__(13);
+var _router = __webpack_require__(13);
+
+var _router2 = _interopRequireDefault(_router);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const app = new _koa2.default();
+
+// 模板引擎
+app.use((0, _koaViews2.default)(_path2.default.join(__dirname, './template'), { extension: 'ejs' }));
+
+// 跨域处理
+app.use((0, _cors2.default)());
+
+// 静态文件
+app.use((0, _koaStatic2.default)(_path2.default.join(__dirname, '../dist')));
+
+// bodyparser
+app.use((0, _koaBodyparser2.default)());
+
+// app.use(webpackMiddleware(webpack(config)));
+
+// router
+app.use(_router2.default.routes()).use(_router2.default.allowedMethods());
+
+app.listen(8000);
+
+console.log('server is ready on 8000');
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = require("koa");
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("@koa/cors");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("koa-static");
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("koa-bodyparser");
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+module.exports = require("koa-views");
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _koaRouter = __webpack_require__(3);
+
+var _koaRouter2 = _interopRequireDefault(_koaRouter);
+
+var _prerender = __webpack_require__(14);
+
+var _prerender2 = _interopRequireDefault(_prerender);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const router = new _koaRouter2.default();
+
+router.use('', _prerender2.default.routes(), _prerender2.default.allowedMethods());
+
+exports.default = router;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _koaRouter = __webpack_require__(3);
+
+var _koaRouter2 = _interopRequireDefault(_koaRouter);
+
+var _server = __webpack_require__(15);
 
 var _reactRedux = __webpack_require__(1);
 
@@ -136,38 +245,21 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _routes = __webpack_require__(14);
+var _routes = __webpack_require__(16);
 
 var _routes2 = _interopRequireDefault(_routes);
 
 var _reactRouterDom = __webpack_require__(2);
 
-var _configStore = __webpack_require__(23);
+var _configStore = __webpack_require__(25);
 
 var _configStore2 = _interopRequireDefault(_configStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-// import render from 'koa-ejs';
 
-
-// import webpack from 'webpack';
-// import webpackMiddleware from "webpack-dev-middleware";
-// import config from '../dev/webpack.config.dev.babel.js';
-
-
-const app = new _koa2.default();
 const router = new _koaRouter2.default();
-
-app.use((0, _koaViews2.default)('server/template', { extension: 'ejs' }));
-// render(app, {
-//   root: 'server/template',
-//   layout: false,
-//   viewExt: 'ejs',
-//   cache: false,
-//   debug: true
-// });
 
 router.get('*', (() => {
   var _ref = _asyncToGenerator(function* (ctx) {
@@ -190,8 +282,6 @@ router.get('*', (() => {
       )
     ));
 
-    console.log(html);
-
     yield ctx.render('index', {
       html,
       preloadedState
@@ -203,114 +293,13 @@ router.get('*', (() => {
   };
 })());
 
-// 跨域处理
-app.use((0, _cors2.default)());
-
-app.use((0, _koaStatic2.default)('dist'));
-
-// bodyparser
-app.use((0, _koaBodyparser2.default)());
-
-// app.use(webpackMiddleware(webpack(config)));
-
-// router
-app.use(router.routes()).use(router.allowedMethods());
-
-app.listen(8000);
-
-console.log('server is ready on 8000');
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = require("path");
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = require("koa");
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = require("@koa/cors");
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("koa-static");
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = require("koa-bodyparser");
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = require("koa-router");
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = require("koa-views");
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports) {
-
-module.exports = require("react-dom/server");
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRouterDom = __webpack_require__(2);
-
-var _reactRouter = __webpack_require__(15);
-
-var _CounterPage = __webpack_require__(16);
-
-var _CounterPage2 = _interopRequireDefault(_CounterPage);
-
-var _HomePage = __webpack_require__(20);
-
-var _HomePage2 = _interopRequireDefault(_HomePage);
-
-__webpack_require__(22);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = () => _react2.default.createElement(
-  _reactRouter.Switch,
-  null,
-  _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _HomePage2.default }),
-  _react2.default.createElement(_reactRouterDom.Route, { path: '/count', component: _CounterPage2.default })
-);
+exports.default = router;
 
 /***/ }),
 /* 15 */
 /***/ (function(module, exports) {
 
-module.exports = require("react-router");
+module.exports = require("react-dom/server");
 
 /***/ }),
 /* 16 */
@@ -327,7 +316,51 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Counter = __webpack_require__(17);
+var _reactRouterDom = __webpack_require__(2);
+
+var _reactRouter = __webpack_require__(17);
+
+var _CounterPage = __webpack_require__(18);
+
+var _CounterPage2 = _interopRequireDefault(_CounterPage);
+
+var _HomePage = __webpack_require__(22);
+
+var _HomePage2 = _interopRequireDefault(_HomePage);
+
+__webpack_require__(24);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = () => _react2.default.createElement(
+  _reactRouter.Switch,
+  null,
+  _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _HomePage2.default }),
+  _react2.default.createElement(_reactRouterDom.Route, { path: '/count', component: _CounterPage2.default })
+);
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = require("react-router");
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Counter = __webpack_require__(19);
 
 var _Counter2 = _interopRequireDefault(_Counter);
 
@@ -346,7 +379,7 @@ let CounterPage = class CounterPage extends _react.Component {
 exports.default = CounterPage;
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -362,13 +395,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(18);
+var _propTypes = __webpack_require__(20);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactRedux = __webpack_require__(1);
 
-var _counter = __webpack_require__(19);
+var _counter = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -417,13 +450,13 @@ let Counter = (_dec = (0, _reactRedux.connect)(mapStateToProps, {
 exports.default = Counter;
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = require("prop-types");
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -434,7 +467,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.decreasement = exports.asyncIncreasement = exports.increasement = undefined;
 
-var _reduxActions = __webpack_require__(3);
+var _reduxActions = __webpack_require__(4);
 
 const increasement = exports.increasement = (0, _reduxActions.createAction)('INCREASEMENT');
 
@@ -443,7 +476,7 @@ const asyncIncreasement = exports.asyncIncreasement = (0, _reduxActions.createAc
 const decreasement = exports.decreasement = (0, _reduxActions.createAction)('DECREASEMENT');
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -463,7 +496,7 @@ var _reactRedux = __webpack_require__(1);
 
 var _reactRouterDom = __webpack_require__(2);
 
-__webpack_require__(21);
+__webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -494,19 +527,19 @@ let HomePage = (_dec = (0, _reactRedux.connect)(null, {}), _dec(_class = class H
 exports.default = HomePage;
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports) {
-
-// empty (null-loader)
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-// empty (null-loader)
-
-/***/ }),
 /* 23 */
+/***/ (function(module, exports) {
+
+// empty (null-loader)
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+// empty (null-loader)
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -516,11 +549,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(4);
+var _redux = __webpack_require__(5);
 
-var _reduxLogger = __webpack_require__(24);
+var _reduxLogger = __webpack_require__(26);
 
-var _reducer = __webpack_require__(25);
+var _reducer = __webpack_require__(27);
 
 var _reducer2 = _interopRequireDefault(_reducer);
 
@@ -553,13 +586,13 @@ exports.default = (initialState = {}) => {
 };
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = require("redux-logger");
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -569,11 +602,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(4);
+var _redux = __webpack_require__(5);
 
-var _reduxActions = __webpack_require__(3);
+var _reduxActions = __webpack_require__(4);
 
-var _counterReducers = __webpack_require__(26);
+var _counterReducers = __webpack_require__(28);
 
 var _counterReducers2 = _interopRequireDefault(_counterReducers);
 
@@ -584,7 +617,7 @@ exports.default = (0, _redux.combineReducers)({
 });
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1,8 +1,15 @@
-module.exports = function ({isDev = true}) {
+module.exports = function ({ifDevServer = true}) {
   const rc = {
     babelrc: false,
     presets: [
-      ['es2015', {modules: false}],
+      ["env", {
+        "targets": {
+          "ios": 8,
+          "android": "4.4"
+        },
+        "modules": false,
+        "useBuiltIns": true
+      }],
       'react',
       'stage-0'
     ],
@@ -12,7 +19,7 @@ module.exports = function ({isDev = true}) {
     ]
   };
 
-  if (isDev) {
+  if (ifDevServer) {
     rc.plugins.push('react-hot-loader/babel');
   }
 
