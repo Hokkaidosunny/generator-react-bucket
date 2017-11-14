@@ -8,14 +8,11 @@ import configStore from '../../src/store/configStore';
 
 const router = new Router();
 
-const ifDev = process.env.NODE_ENV === 'dev';
-console.log(process.env.NODE_ENV);
-
 router.get('*', async (ctx) => {
   console.log(ctx.url);
+  const assetsByChunkName = ctx.state.webpackStats.toJson().assetsByChunkName;
 
-  const store = configStore();
-  const preloadedState = JSON.stringify({counter: 3});
+  const store = configStore({counter: 3});
   const context = {};
 
   const html = renderToString(
@@ -31,7 +28,9 @@ router.get('*', async (ctx) => {
 
   await ctx.render('index.dev', {
     html,
-    preloadedState
+    preloadedState: JSON.stringify(store.getState()),
+    vendor: assetsByChunkName['js/vendor'],
+    main: assetsByChunkName['js/main']
   });
 });
 

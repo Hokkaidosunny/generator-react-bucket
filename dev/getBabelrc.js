@@ -1,4 +1,4 @@
-module.exports = function ({ifDevServer = true}) {
+module.exports = function () {
   const rc = {
     babelrc: false,
     presets: [
@@ -18,10 +18,6 @@ module.exports = function ({ifDevServer = true}) {
       'lodash'
     ]
   };
-
-  if (ifDevServer) {
-    rc.plugins.push('react-hot-loader/babel');
-  }
 
   return rc;
 };

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -85,74 +85,86 @@ module.exports = require("react-router-dom");
 /* 3 */
 /***/ (function(module, exports) {
 
-module.exports = require("koa-router");
+module.exports = require("path");
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("redux-actions");
+module.exports = require("koa-router");
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = require("redux");
+module.exports = require("redux-actions");
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-__webpack_require__(7);
-module.exports = __webpack_require__(8);
-
+module.exports = require("redux");
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-module.exports = require("babel-polyfill");
+module.exports = require("webpack");
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(9);
+module.exports = __webpack_require__(10);
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("babel-polyfill");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
-var _path = __webpack_require__(9);
+var _path = __webpack_require__(3);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _koa = __webpack_require__(10);
+var _koa = __webpack_require__(11);
 
 var _koa2 = _interopRequireDefault(_koa);
 
-var _cors = __webpack_require__(11);
+var _cors = __webpack_require__(12);
 
 var _cors2 = _interopRequireDefault(_cors);
 
-var _koaStatic = __webpack_require__(12);
+var _koaStatic = __webpack_require__(13);
 
 var _koaStatic2 = _interopRequireDefault(_koaStatic);
 
-var _koaBodyparser = __webpack_require__(13);
+var _koaBodyparser = __webpack_require__(14);
 
 var _koaBodyparser2 = _interopRequireDefault(_koaBodyparser);
 
-var _koaViews = __webpack_require__(14);
+var _koaViews = __webpack_require__(15);
 
 var _koaViews2 = _interopRequireDefault(_koaViews);
 
-var _router = __webpack_require__(15);
+var _router = __webpack_require__(16);
 
 var _router2 = _interopRequireDefault(_router);
 
-var _webpackDevMiddleware = __webpack_require__(32);
+var _koaWebpack = __webpack_require__(32);
 
-var _webpackDevMiddleware2 = _interopRequireDefault(_webpackDevMiddleware);
+var _koaWebpack2 = _interopRequireDefault(_koaWebpack);
 
-var _webpack = __webpack_require__(31);
+var _webpack = __webpack_require__(7);
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
@@ -164,92 +176,81 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const app = new _koa2.default();
 
+const compiler = (0, _webpack2.default)(_webpackConfigDevBabel2.default);
+const koaMiddlewareInstance = (0, _koaWebpack2.default)({
+  compiler,
+  config: _webpackConfigDevBabel2.default,
+  dev: {
+    noInfo: false,
+    quiet: false,
+    lazy: false,
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: true
+    },
+    publicPath: "/dist/",
+    index: "index.html",
+    stats: {
+      colors: true
+    },
+    reporter: null,
+    serverSideRender: true
+  }
+});
+
 // 模板引擎
 app.use((0, _koaViews2.default)(_path2.default.join(__dirname, './template'), { extension: 'ejs' }));
 
 // 跨域处理
 app.use((0, _cors2.default)());
 
-// 静态文件
-app.use((0, _koaStatic2.default)(_path2.default.join(__dirname, '../dist')));
-
 // bodyparser
 app.use((0, _koaBodyparser2.default)());
 
+// 静态文件
+app.use((0, _koaStatic2.default)(_path2.default.join(__dirname, '../dist')));
+
 // dev server
-app.use((0, _webpackDevMiddleware2.default)((0, _webpack2.default)(_webpackConfigDevBabel2.default)));
+app.use(koaMiddlewareInstance);
+
+// hot
 
 // router
-// app
-//   .use(router.routes())
-//   .use(router.allowedMethods());
+app.use(_router2.default.routes()).use(_router2.default.allowedMethods());
 
 app.listen(8000);
 
 console.log('server is ready on 8000');
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("path");
-
-/***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = require("koa");
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("@koa/cors");
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("koa-static");
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = require("koa-bodyparser");
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = require("koa-views");
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _koaRouter = __webpack_require__(3);
-
-var _koaRouter2 = _interopRequireDefault(_koaRouter);
-
-var _prerender = __webpack_require__(16);
-
-var _prerender2 = _interopRequireDefault(_prerender);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const router = new _koaRouter2.default();
-
-router.use('', _prerender2.default.routes(), _prerender2.default.allowedMethods());
-
-exports.default = router;
 
 /***/ }),
 /* 16 */
@@ -262,11 +263,38 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _koaRouter = __webpack_require__(3);
+var _koaRouter = __webpack_require__(4);
 
 var _koaRouter2 = _interopRequireDefault(_koaRouter);
 
-var _server = __webpack_require__(17);
+var _prerender = __webpack_require__(17);
+
+var _prerender2 = _interopRequireDefault(_prerender);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const router = new _koaRouter2.default();
+
+router.use('', _prerender2.default.routes(), _prerender2.default.allowedMethods());
+
+exports.default = router;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _koaRouter = __webpack_require__(4);
+
+var _koaRouter2 = _interopRequireDefault(_koaRouter);
+
+var _server = __webpack_require__(18);
 
 var _reactRedux = __webpack_require__(1);
 
@@ -274,13 +302,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _routes = __webpack_require__(18);
+var _routes = __webpack_require__(19);
 
 var _routes2 = _interopRequireDefault(_routes);
 
 var _reactRouterDom = __webpack_require__(2);
 
-var _configStore = __webpack_require__(27);
+var _configStore = __webpack_require__(28);
 
 var _configStore2 = _interopRequireDefault(_configStore);
 
@@ -290,15 +318,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 const router = new _koaRouter2.default();
 
-const ifDev = process.env.NODE_ENV === 'dev';
-console.log(process.env.NODE_ENV);
-
 router.get('*', (() => {
   var _ref = _asyncToGenerator(function* (ctx) {
     console.log(ctx.url);
+    const assetsByChunkName = ctx.state.webpackStats.toJson().assetsByChunkName;
 
-    const store = (0, _configStore2.default)();
-    const preloadedState = JSON.stringify({ counter: 3 });
+    const store = (0, _configStore2.default)({ counter: 3 });
     const context = {};
 
     const html = (0, _server.renderToString)(_react2.default.createElement(
@@ -316,7 +341,9 @@ router.get('*', (() => {
 
     yield ctx.render('index.dev', {
       html,
-      preloadedState
+      preloadedState: JSON.stringify(store.getState()),
+      vendor: assetsByChunkName['js/vendor'],
+      main: assetsByChunkName['js/main']
     });
   });
 
@@ -328,13 +355,13 @@ router.get('*', (() => {
 exports.default = router;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-dom/server");
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -350,17 +377,17 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(2);
 
-var _reactRouter = __webpack_require__(19);
+var _reactRouter = __webpack_require__(20);
 
-var _CounterPage = __webpack_require__(20);
+var _CounterPage = __webpack_require__(21);
 
 var _CounterPage2 = _interopRequireDefault(_CounterPage);
 
-var _HomePage = __webpack_require__(24);
+var _HomePage = __webpack_require__(25);
 
 var _HomePage2 = _interopRequireDefault(_HomePage);
 
-__webpack_require__(26);
+__webpack_require__(27);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -372,13 +399,13 @@ exports.default = () => _react2.default.createElement(
 );
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = require("react-router");
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -392,7 +419,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Counter = __webpack_require__(21);
+var _Counter = __webpack_require__(22);
 
 var _Counter2 = _interopRequireDefault(_Counter);
 
@@ -411,7 +438,7 @@ let CounterPage = class CounterPage extends _react.Component {
 exports.default = CounterPage;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -427,13 +454,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(22);
+var _propTypes = __webpack_require__(23);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactRedux = __webpack_require__(1);
 
-var _counter = __webpack_require__(23);
+var _counter = __webpack_require__(24);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -482,13 +509,13 @@ let Counter = (_dec = (0, _reactRedux.connect)(mapStateToProps, {
 exports.default = Counter;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("prop-types");
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -499,7 +526,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.decreasement = exports.asyncIncreasement = exports.increasement = undefined;
 
-var _reduxActions = __webpack_require__(4);
+var _reduxActions = __webpack_require__(5);
 
 const increasement = exports.increasement = (0, _reduxActions.createAction)('INCREASEMENT');
 
@@ -508,7 +535,7 @@ const asyncIncreasement = exports.asyncIncreasement = (0, _reduxActions.createAc
 const decreasement = exports.decreasement = (0, _reduxActions.createAction)('DECREASEMENT');
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -528,7 +555,7 @@ var _reactRedux = __webpack_require__(1);
 
 var _reactRouterDom = __webpack_require__(2);
 
-__webpack_require__(25);
+__webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -549,7 +576,7 @@ let HomePage = (_dec = (0, _reactRedux.connect)(null, {}), _dec(_class = class H
         ),
         _react2.default.createElement(
           _reactRouterDom.Link,
-          { to: 'count' },
+          { to: '/count' },
           'count page'
         )
       )
@@ -559,12 +586,6 @@ let HomePage = (_dec = (0, _reactRedux.connect)(null, {}), _dec(_class = class H
 exports.default = HomePage;
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-// empty (null-loader)
-
-/***/ }),
 /* 26 */
 /***/ (function(module, exports) {
 
@@ -572,6 +593,12 @@ exports.default = HomePage;
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports) {
+
+// empty (null-loader)
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -581,11 +608,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(5);
+var _redux = __webpack_require__(6);
 
-var _reduxLogger = __webpack_require__(28);
+var _reduxLogger = __webpack_require__(29);
 
-var _reducer = __webpack_require__(29);
+var _reducer = __webpack_require__(30);
 
 var _reducer2 = _interopRequireDefault(_reducer);
 
@@ -618,13 +645,13 @@ exports.default = (initialState = {}) => {
 };
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = require("redux-logger");
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -634,11 +661,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _redux = __webpack_require__(5);
+var _redux = __webpack_require__(6);
 
-var _reduxActions = __webpack_require__(4);
+var _reduxActions = __webpack_require__(5);
 
-var _counterReducers = __webpack_require__(30);
+var _counterReducers = __webpack_require__(31);
 
 var _counterReducers2 = _interopRequireDefault(_counterReducers);
 
@@ -649,7 +676,7 @@ exports.default = (0, _redux.combineReducers)({
 });
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -664,16 +691,10 @@ exports.default = {
 };
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-module.exports = require("webpack");
-
-/***/ }),
 /* 32 */
 /***/ (function(module, exports) {
 
-module.exports = require("webpack-dev-middleware");
+module.exports = require("koa-webpack");
 
 /***/ }),
 /* 33 */
@@ -703,11 +724,11 @@ module.exports = (0, _makeWebpackConfig2.default)({
 "use strict";
 
 
-var _path = __webpack_require__(9);
+var _path = __webpack_require__(3);
 
 var _path2 = _interopRequireDefault(_path);
 
-var _webpack = __webpack_require__(31);
+var _webpack = __webpack_require__(7);
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
@@ -719,38 +740,26 @@ var _uglifyjsWebpackPlugin = __webpack_require__(36);
 
 var _uglifyjsWebpackPlugin2 = _interopRequireDefault(_uglifyjsWebpackPlugin);
 
-var _inlineChunkManifestHtmlWebpackPlugin = __webpack_require__(37);
-
-var _inlineChunkManifestHtmlWebpackPlugin2 = _interopRequireDefault(_inlineChunkManifestHtmlWebpackPlugin);
-
-var _extractTextWebpackPlugin = __webpack_require__(38);
+var _extractTextWebpackPlugin = __webpack_require__(37);
 
 var _extractTextWebpackPlugin2 = _interopRequireDefault(_extractTextWebpackPlugin);
 
-var _autodllWebpackPlugin = __webpack_require__(39);
-
-var _autodllWebpackPlugin2 = _interopRequireDefault(_autodllWebpackPlugin);
-
-var _happypack = __webpack_require__(40);
-
-var _happypack2 = _interopRequireDefault(_happypack);
-
-var _getBabelrc = __webpack_require__(41);
+var _getBabelrc = __webpack_require__(38);
 
 var _getBabelrc2 = _interopRequireDefault(_getBabelrc);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const include = [_path2.default.join(__dirname, '../src')];
+
 //entry
-function getEntry({ ifMock, isDev, port = 4000 }) {
+function getEntry({ ifMock }) {
   const entry = ['babel-polyfill', 'isomorphic-fetch'];
-  if (isDev) {
-    entry.push(`webpack-dev-server/client?http://0.0.0.0:${port}`);
-    entry.push('webpack/hot/only-dev-server');
-  }
+
   if (ifMock) {
     entry.push(_path2.default.join(__dirname, '../src/mock/index.js'));
   }
+
   entry.push(_path2.default.join(__dirname, '../src/index.js'));
 
   return {
@@ -762,7 +771,7 @@ function getEntry({ ifMock, isDev, port = 4000 }) {
 function getOutput({ isDev }) {
   return {
     path: _path2.default.join(__dirname, '../dist'),
-    publicPath: '/',
+    publicPath: '/dist/',
     filename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js', //chunkhash 生产使用，缓存vendor文件
     chunkFilename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js',
     sourceMapFilename: '[file].map'
@@ -797,21 +806,12 @@ function getRules({ isDev }) {
         name: 'fonts/[name].[hash].[ext]'
       }
     }
+  }, {
+    test: /\.(js|jsx)$/,
+    loader: 'babel-loader',
+    include,
+    options: (0, _getBabelrc2.default)({ ifDevServer: false })
   }];
-
-  if (isDev) {
-    rules.push({
-      test: /\.(js|jsx)$/,
-      exclude: /node_modules/,
-      loader: 'happypack/loader'
-    });
-  } else {
-    rules.push({
-      test: /\.(js|jsx)$/,
-      loader: 'babel-loader',
-      options: (0, _getBabelrc2.default)({ ifDevServer: false })
-    });
-  }
 
   return rules;
 }
@@ -825,65 +825,39 @@ function getPlugins(config) {
     envs[`process.env.${key}`] = JSON.stringify(config[key]);
   }
 
-  let plugins = [new _webpack2.default.DefinePlugin(envs)];
+  let plugins = [new _webpack2.default.DefinePlugin(envs), new _htmlWebpackPlugin2.default({
+    title: 'index',
+    filename: 'index.html',
+    template: 'src/index.html',
+    inject: true,
+    chunks: ['js/vendor', 'js/main'],
+    chunksSortMode: function (a, b) {
+      //按顺序插入js文件
+      const orders = ['js/vendor', 'js/main'];
+      return orders.indexOf(a.names[0]) - orders.indexOf(b.names[0]);
+    }
+  }),
+  //提取库代码
+  new _webpack2.default.optimize.CommonsChunkPlugin({
+    name: "js/vendor",
+    minChunks: function (module) {
+      //去掉sass
+      if (module.resource && /^.*\.(css|scss|sass)$/.test(module.resource)) {
+        return false;
+      }
+      //来自node_modules的文件统一打进vendor
+      return module.context && module.context.indexOf("node_modules") !== -1;
+    }
+  })];
 
   if (isDev) {
-    plugins = plugins.concat([new _htmlWebpackPlugin2.default({
-      title: 'index',
-      filename: 'index.html',
-      template: 'src/index.html',
-      inject: true
-    }),
+    plugins = plugins.concat([
     //文件变化时，输出文件名，会增加文件大小
-    new _webpack2.default.NamedModulesPlugin(),
-    //生成dll文件
-    new _autodllWebpackPlugin2.default({
-      inject: true, // will inject the DLL bundles to index.html
-      filename: '[name].[hash].js',
-      entry: {
-        vendor: __webpack_require__(42)
-      }
-    }),
-    //HappyPack 打包
-    new _happypack2.default({
-      loaders: [{
-        path: 'babel-loader',
-        query: (0, _getBabelrc2.default)({ isDev })
-      }],
-      threads: 4
-    })]);
+    new _webpack2.default.NamedModulesPlugin(), new _webpack2.default.HotModuleReplacementPlugin()]);
   }
 
   if (isPro) {
-    plugins = plugins.concat([new _htmlWebpackPlugin2.default({
-      title: 'index',
-      filename: 'index.html',
-      template: 'src/index.html',
-      inject: true,
-      chunks: ['js/runtime', 'js/vendor', 'js/main'],
-      chunksSortMode: function (a, b) {
-        //按顺序插入js文件
-        const orders = ['js/runtime', 'js/vendor', 'js/main'];
-        return orders.indexOf(a.names[0]) - orders.indexOf(b.names[0]);
-      }
-    }), new _inlineChunkManifestHtmlWebpackPlugin2.default(), new _webpack2.default.HashedModuleIdsPlugin(),
-    //提取库代码
-    new _webpack2.default.optimize.CommonsChunkPlugin({
-      name: "js/vendor",
-      minChunks: function (module) {
-        //去掉sass
-        if (module.resource && /^.*\.(css|scss|sass)$/.test(module.resource)) {
-          return false;
-        }
-        //来自node_modules的文件统一打进vendor
-        return module.context && module.context.indexOf("node_modules") !== -1;
-      }
-    }),
-    //提前webpack运行时代码
-    new _webpack2.default.optimize.CommonsChunkPlugin({
-      name: "js/runtime",
-      minChunks: Infinity
-    }),
+    plugins = plugins.concat([new _webpack2.default.HashedModuleIdsPlugin(),
     //提出css
     new _extractTextWebpackPlugin2.default({
       filename: getPath => getPath('css/[name].[contenthash].css').replace('css/js', 'css'),
@@ -898,6 +872,7 @@ function getPlugins(config) {
       }
     })]);
   }
+
   return plugins;
 }
 
@@ -919,13 +894,7 @@ function makeWebpackConfig(config) {
       rules: getRules(config)
     },
     devtool: getSourceMap(config),
-    plugins: getPlugins(config),
-    devServer: {
-      publicPath: getOutput(config).publicPath,
-      historyApiFallback: true, //任意的 404 响应都可能需要被替代为 index.html
-      contentBase: _path2.default.join(__dirname, "../dist"),
-      port: config.port || 4000
-    }
+    plugins: getPlugins(config)
   };
 }
 
@@ -947,34 +916,16 @@ module.exports = require("uglifyjs-webpack-plugin");
 /* 37 */
 /***/ (function(module, exports) {
 
-module.exports = require("inline-chunk-manifest-html-webpack-plugin");
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
 module.exports = require("extract-text-webpack-plugin");
 
 /***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-module.exports = require("autodll-webpack-plugin");
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports) {
-
-module.exports = require("happypack");
-
-/***/ }),
-/* 41 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = function ({ ifDevServer = true }) {
+module.exports = function () {
   const rc = {
     babelrc: false,
     presets: [["env", {
@@ -988,21 +939,8 @@ module.exports = function ({ ifDevServer = true }) {
     plugins: ['transform-decorators-legacy', 'lodash']
   };
 
-  if (ifDevServer) {
-    rc.plugins.push('react-hot-loader/babel');
-  }
-
   return rc;
 };
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = ["babel-polyfill", "history", "immutable", "isomorphic-fetch", "lodash", "prop-types", "react", "react-dom", "react-redux", "react-router", "react-router-dom", "react-router-redux", "redux", "redux-actions", "redux-logger", "reselect"];
 
 /***/ })
 /******/ ]);

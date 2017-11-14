@@ -2,22 +2,21 @@ import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
-import InlineChunkManifestHtmlWebpackPlugin from 'inline-chunk-manifest-html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import AutoDllPlugin from 'autodll-webpack-plugin';
-import HappyPack from 'happypack';
-import getBabelrc from './getBabelrc.js';
+import getBabelrc from './getBabelrc';
+
+const include = [
+  path.join(__dirname, '../src'),
+];
 
 //entry
-function getEntry({ifMock, isDev, port = 4000}) {
+function getEntry({ifMock}) {
   const entry = ['babel-polyfill', 'isomorphic-fetch'];
-  if (isDev) {
-    entry.push(`webpack-dev-server/client?http://0.0.0.0:${port}`);
-    entry.push('webpack/hot/only-dev-server');
-  }
+
   if (ifMock) {
     entry.push(path.join(__dirname, '../src/mock/index.js'));
   }
+
   entry.push(path.join(__dirname, '../src/index.js'));
 
   return {
@@ -29,7 +28,7 @@ function getEntry({ifMock, isDev, port = 4000}) {
 function getOutput({isDev}) {
   return {
     path: path.join(__dirname, '../dist'),
-    publicPath: '/',
+    publicPath: '/dist/',
     filename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js', //chunkhash 生产使用，缓存vendor文件
     chunkFilename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js',
     sourceMapFilename: '[file].map'
@@ -67,22 +66,13 @@ function getRules({isDev}) {
           name: 'fonts/[name].[hash].[ext]'
         },
       }
-    }
-  ];
-
-  if (isDev) {
-    rules.push({
-      test: /\.(js|jsx)$/,
-      exclude: /node_modules/,
-      loader: 'happypack/loader'
-    });
-  } else {
-    rules.push({
+    }, {
       test: /\.(js|jsx)$/,
       loader: 'babel-loader',
+      include,
       options: getBabelrc({ifDevServer: false})
-    });
-  }
+    }
+  ];
 
   return rules;
 }
@@ -97,70 +87,43 @@ function getPlugins(config) {
   }
 
   let plugins = [
-    new webpack.DefinePlugin(envs)
+    new webpack.DefinePlugin(envs),
+    new HtmlWebpackPlugin({
+      title: 'index',
+      filename: 'index.html',
+      template: 'src/index.html',
+      inject: true,
+      chunks: ['js/vendor', 'js/main'],
+      chunksSortMode: function (a, b) { //按顺序插入js文件
+        const orders = ['js/vendor', 'js/main'];
+        return orders.indexOf(a.names[0]) - orders.indexOf(b.names[0]);
+      },
+    }),
+    //提取库代码
+    new webpack.optimize.CommonsChunkPlugin({
+      name: "js/vendor",
+      minChunks: function(module) {
+        //去掉sass
+        if(module.resource && (/^.*\.(css|scss|sass)$/).test(module.resource)) {
+          return false;
+        }
+        //来自node_modules的文件统一打进vendor
+        return module.context && module.context.indexOf("node_modules") !== -1;
+      }
+    }),
   ];
 
   if (isDev) {
     plugins = plugins.concat([
-      new HtmlWebpackPlugin({
-        title: 'index',
-        filename: 'index.html',
-        template: 'src/index.html',
-        inject: true
-      }),
       //文件变化时，输出文件名，会增加文件大小
       new webpack.NamedModulesPlugin(),
-      //生成dll文件
-      new AutoDllPlugin({
-        inject: true, // will inject the DLL bundles to index.html
-        filename: '[name].[hash].js',
-        entry: {
-          vendor: require('./vendorModules.js')
-        }
-      }),
-      //HappyPack 打包
-      new HappyPack({
-        loaders: [{
-          path: 'babel-loader',
-          query: getBabelrc({isDev})
-        }],
-        threads: 4
-      })
+      new webpack.HotModuleReplacementPlugin()
     ]);
   }
 
   if (isPro) {
     plugins = plugins.concat([
-      new HtmlWebpackPlugin({
-        title: 'index',
-        filename: 'index.html',
-        template: 'src/index.html',
-        inject: true,
-        chunks: ['js/runtime', 'js/vendor', 'js/main'],
-        chunksSortMode: function (a, b) { //按顺序插入js文件
-          const orders = ['js/runtime', 'js/vendor', 'js/main'];
-          return orders.indexOf(a.names[0]) - orders.indexOf(b.names[0]);
-        },
-      }),
-      new InlineChunkManifestHtmlWebpackPlugin(),
       new webpack.HashedModuleIdsPlugin(),
-      //提取库代码
-      new webpack.optimize.CommonsChunkPlugin({
-        name: "js/vendor",
-        minChunks: function(module) {
-          //去掉sass
-          if(module.resource && (/^.*\.(css|scss|sass)$/).test(module.resource)) {
-            return false;
-          }
-          //来自node_modules的文件统一打进vendor
-          return module.context && module.context.indexOf("node_modules") !== -1;
-        }
-      }),
-      //提前webpack运行时代码
-      new webpack.optimize.CommonsChunkPlugin({
-        name: "js/runtime",
-        minChunks: Infinity
-      }),
       //提出css
       new ExtractTextPlugin({
         filename: getPath => getPath('css/[name].[contenthash].css').replace('css/js', 'css'),
@@ -176,6 +139,7 @@ function getPlugins(config) {
       })
     ]);
   }
+
   return plugins;
 }
 
@@ -197,13 +161,7 @@ function makeWebpackConfig(config) {
       rules: getRules(config)
     },
     devtool: getSourceMap(config),
-    plugins: getPlugins(config),
-    devServer: {
-      publicPath: getOutput(config).publicPath,
-      historyApiFallback: true, //任意的 404 响应都可能需要被替代为 index.html
-      contentBase: path.join(__dirname, "../dist"),
-      port: config.port || 4000
-    }
+    plugins: getPlugins(config)
   };
 }
 

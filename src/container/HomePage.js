@@ -12,7 +12,7 @@ class HomePage extends Component {
         <div>
           this is home
           <a onClick={this.props.fetchNumbers}>click me</a>
-          <Link to='count'>count page</Link>
+          <Link to='/count'>count page</Link>
         </div>
       </div>
     );
