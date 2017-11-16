@@ -1,5 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import getBabelrc from './getBabelrc';
@@ -9,8 +10,10 @@ const include = [
 ];
 
 //entry
-function getEntry({ifMock}) {
-  const entry = ['babel-polyfill', 'isomorphic-fetch', 'webpack-hot-middleware/client'];
+function getEntry({ifMock, isDev}) {
+  const entry = ['babel-polyfill', 'isomorphic-fetch'];
+
+  isDev && entry.push('webpack-hot-middleware/client');
 
   if (ifMock) {
     entry.push(path.join(__dirname, '../client/mock/index.js'));
@@ -70,6 +73,9 @@ function getRules({isDev}) {
       loader: 'babel-loader',
       include,
       options: getBabelrc({ifDevServer: false})
+    }, {
+      test: /\.(html|ejs)$/,
+      loader: 'html-loader'
     }
   ];
 
@@ -111,6 +117,12 @@ function getPlugins(config) {
 
   if (isPro) {
     plugins = plugins.concat([
+      new HtmlWebpackPlugin({
+        title: 'index',
+        filename: path.join(__dirname, '../server/template/index.pro.ejs'),
+        template: 'server/template/index.tpl.ejs',
+        inject: true,
+      }),
       new webpack.HashedModuleIdsPlugin(),
       //提出css
       new ExtractTextPlugin({

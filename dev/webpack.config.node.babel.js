@@ -1,6 +1,7 @@
 import path from 'path';
 import nodeExternals from 'webpack-node-externals';
 import getBabelrc from './getBabelrc';
+import webpack from 'webpack';
 
 module.exports = {
   entry: [
@@ -46,5 +47,11 @@ module.exports = {
         options: getBabelrc('node')
       }
     ]
-  }
+  },
+
+  // plugins: [
+  //   new webpack.DefinePlugin({
+  //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+  //   })
+  // ]
 };

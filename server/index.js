@@ -9,7 +9,9 @@ import webpackDevServer from './webpack-dev-server';
 
 const app = new Koa();
 const appRoot = path.join(__dirname, '..');
+const isDev = process.env.NODE_ENV === 'development';
 
+console.log(process.env.NODE_ENV);
 // 模板引擎
 app.use(views(path.join(appRoot, 'server/template'), { extension: 'ejs' }));
 
@@ -23,7 +25,7 @@ app.use(bodyparser());
 app.use(serve(path.join(appRoot, 'dist/public')));
 
 // dev server
-app.use(webpackDevServer);
+isDev && app.use(webpackDevServer());
 
 // router
 app

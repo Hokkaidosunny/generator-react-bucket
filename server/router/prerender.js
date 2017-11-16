@@ -7,10 +7,10 @@ import { StaticRouter } from 'react-router-dom';
 import configStore from '../../client/store/configStore';
 
 const router = new Router();
+const isDev = process.env.NODE_ENV === 'development';
 
 router.get('*', async (ctx) => {
   console.log(ctx.url);
-  const assetsByChunkName = ctx.state.webpackStats.toJson().assetsByChunkName;
 
   const store = configStore({counter: 3});
   const context = {};
@@ -26,12 +26,22 @@ router.get('*', async (ctx) => {
     </Provider>
   );
 
-  await ctx.render('index.dev', {
-    html,
-    preloadedState: JSON.stringify(store.getState()),
-    vendor: assetsByChunkName['js/vendor'],
-    main: assetsByChunkName['js/main']
-  });
+  if (isDev) {
+    const assetsByChunkName = ctx.state.webpackStats.toJson().assetsByChunkName;
+    console.log(assetsByChunkName);
+
+    await ctx.render('index.dev', {
+      html,
+      preloadedState: JSON.stringify(store.getState()),
+      vendor: assetsByChunkName['js/vendor'],
+      main: assetsByChunkName['js/main']
+    });
+  } else {
+    await ctx.render('index.pro', {
+      html,
+      preloadedState: JSON.stringify(store.getState())
+    });
+  }
 });
 
 export default router;

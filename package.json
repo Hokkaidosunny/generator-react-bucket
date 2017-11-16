@@ -8,9 +8,11 @@
   "license": "ISC",
   "scripts": {
     "dev": "webpack-dev-server --host 0.0.0.0 --inline --hot --config ./dev/webpack.config.dev.babel.js",
-    "build": "rm -rf dist && webpack -p --progress --colors --config ./dev/webpack.config.pro.babel.js",
-    "server": "webpack --progress --colors --config ./dev/webpack.config.node.babel.js && node dist/server.bundle.js",
-    "start": "nodemon --watch server -x \"npm run server\""
+    "build:client": "rm -rf dist/public && webpack -p --progress --colors --config ./dev/webpack.config.pro.babel.js",
+    "build:server": "rm -rf dist/server.bundle.js && webpack --progress --colors --config ./dev/webpack.config.node.babel.js",
+    "build": "NODE_ENV=production npm run build:client && npm run build:server",
+    "server": "NODE_ENV=production node dist/server.bundle.js",
+    "start": "NODE_ENV=development nodemon --watch server -x \"npm run build:server && node dist/server.bundle.js\""
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
@@ -59,6 +61,7 @@
     "fetch-mock": "^5.12.2",
     "file-loader": "^0.11.1",
     "happypack": "^4.0.0-beta.1",
+    "html-loader": "^0.5.1",
     "html-webpack-plugin": "^2.30.1",
     "inline-chunk-manifest-html-webpack-plugin": "^1.1.1",
     "koa-webpack": "^1.0.0",
