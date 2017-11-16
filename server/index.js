@@ -8,9 +8,10 @@ import router from './router';
 import webpackDevServer from './webpack-dev-server';
 
 const app = new Koa();
+const appRoot = path.join(__dirname, '..');
 
 // 模板引擎
-app.use(views(path.join(__dirname, './template'), { extension: 'ejs' }));
+app.use(views(path.join(appRoot, 'server/template'), { extension: 'ejs' }));
 
 // 跨域处理
 app.use(cors());
@@ -19,7 +20,7 @@ app.use(cors());
 app.use(bodyparser());
 
 // 静态文件
-app.use(serve(path.join(__dirname, '../dist')));
+app.use(serve(path.join(appRoot, 'dist/public')));
 
 // dev server
 app.use(webpackDevServer);

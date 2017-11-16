@@ -14,7 +14,7 @@ const webpackDevServer = koaWebpack({
       aggregateTimeout: 300,
       poll: true
     },
-    publicPath: "/dist/",
+    publicPath: "/",
     index: "index.html",
     stats: {
       colors: true

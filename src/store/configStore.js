@@ -28,5 +28,9 @@ export default (initialState = {}) => {
     composeEnhancers(...enhancers),
   );
 
+  module.hot && module.hot.accept('../reducer/index', () => {
+    store.replaceReducer(require('../reducer/index').default);
+  });
+
   return store;
 };

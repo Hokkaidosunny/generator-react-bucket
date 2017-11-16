@@ -12,7 +12,7 @@ module.exports = {
   target: 'node',
 
   output: {
-    path: path.join(__dirname, '../server'),
+    path: path.join(__dirname, '../dist'),
     filename: 'server.bundle.js'
   },
 
@@ -26,13 +26,13 @@ module.exports = {
     __dirname: false
   },
 
-  watch: true,
-
-  watchOptions: {
-    aggregateTimeout: 300,
-    poll: 1000,
-    ignored: /node_modules/
-  },
+  // watch: true,
+  //
+  // watchOptions: {
+  //   aggregateTimeout: 300,
+  //   poll: 1000,
+  //   ignored: /node_modules/
+  // },
 
   module: {
     rules: [

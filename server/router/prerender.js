@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import React from 'react';
-import routes from '../../src/routes';
+import App from '../../src/routes';
 import { StaticRouter } from 'react-router-dom';
 import configStore from '../../src/store/configStore';
 
@@ -21,7 +21,7 @@ router.get('*', async (ctx) => {
         location={ctx.url}
         context={context}
         >
-        {routes()}
+        <App />
       </StaticRouter>
     </Provider>
   );

@@ -11,7 +11,7 @@ const include = [
 
 //entry
 function getEntry({ifMock}) {
-  const entry = ['babel-polyfill', 'isomorphic-fetch'];
+  const entry = ['babel-polyfill', 'isomorphic-fetch', 'webpack-hot-middleware/client'];
 
   if (ifMock) {
     entry.push(path.join(__dirname, '../src/mock/index.js'));
@@ -27,8 +27,8 @@ function getEntry({ifMock}) {
 //output
 function getOutput({isDev}) {
   return {
-    path: path.join(__dirname, '../dist'),
-    publicPath: '/dist/',
+    path: path.join(__dirname, '../dist/public'),
+    publicPath: '/',
     filename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js', //chunkhash 生产使用，缓存vendor文件
     chunkFilename: isDev ? '[name].[hash].js' : '[name].[chunkhash].js',
     sourceMapFilename: '[file].map'
