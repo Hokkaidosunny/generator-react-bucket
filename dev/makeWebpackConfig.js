@@ -1,12 +1,11 @@
 import path from 'path';
 import webpack from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import getBabelrc from './getBabelrc';
 
 const include = [
-  path.join(__dirname, '../src'),
+  path.join(__dirname, '../client'),
 ];
 
 //entry
@@ -14,10 +13,10 @@ function getEntry({ifMock}) {
   const entry = ['babel-polyfill', 'isomorphic-fetch', 'webpack-hot-middleware/client'];
 
   if (ifMock) {
-    entry.push(path.join(__dirname, '../src/mock/index.js'));
+    entry.push(path.join(__dirname, '../client/mock/index.js'));
   }
 
-  entry.push(path.join(__dirname, '../src/index.js'));
+  entry.push(path.join(__dirname, '../client/index.js'));
 
   return {
     'js/main': entry
@@ -88,17 +87,6 @@ function getPlugins(config) {
 
   let plugins = [
     new webpack.DefinePlugin(envs),
-    new HtmlWebpackPlugin({
-      title: 'index',
-      filename: 'index.html',
-      template: 'src/index.html',
-      inject: true,
-      chunks: ['js/vendor', 'js/main'],
-      chunksSortMode: function (a, b) { //按顺序插入js文件
-        const orders = ['js/vendor', 'js/main'];
-        return orders.indexOf(a.names[0]) - orders.indexOf(b.names[0]);
-      },
-    }),
     //提取库代码
     new webpack.optimize.CommonsChunkPlugin({
       name: "js/vendor",

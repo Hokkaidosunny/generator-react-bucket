@@ -2,9 +2,9 @@ import Router from 'koa-router';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import React from 'react';
-import App from '../../src/routes';
+import App from '../../client/routes';
 import { StaticRouter } from 'react-router-dom';
-import configStore from '../../src/store/configStore';
+import configStore from '../../client/store/configStore';
 
 const router = new Router();
 

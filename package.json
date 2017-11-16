@@ -10,7 +10,7 @@
     "dev": "webpack-dev-server --host 0.0.0.0 --inline --hot --config ./dev/webpack.config.dev.babel.js",
     "build": "rm -rf dist && webpack -p --progress --colors --config ./dev/webpack.config.pro.babel.js",
     "server": "webpack --progress --colors --config ./dev/webpack.config.node.babel.js && node dist/server.bundle.js",
-    "watch:server": "nodemon --watch server -x \"npm run server\""
+    "start": "nodemon --watch server -x \"npm run server\""
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
