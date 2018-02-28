@@ -1,2 +1,15 @@
+/**
+ * next config
+ * @type {[type]}
+ */
+
 const withTypescript = require('@zeit/next-typescript')
-module.exports = withTypescript()
+const withSass = require('@zeit/next-sass')
+const {compose} = require('redux')
+
+const enhancers = compose(
+  withSass,
+  withTypescript
+)
+
+module.exports = enhancers()

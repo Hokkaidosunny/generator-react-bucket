@@ -32,7 +32,10 @@
     "@types/redux-logger": "^3.0.5",
     "@types/redux-thunk": "^2.1.0",
     "@types/reselect": "^2.2.0",
+    "@zeit/next-sass": "^0.1.1",
     "@zeit/next-typescript": "0.0.8",
+    "node-sass": "^4.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "typescript": "^2.7.1"
   }
 }
