@@ -1,3 +1,9 @@
+/**
+ * rootReducer
+ * @param  {counter} [description]
+ * @return           [description]
+ */
+import {combineReducers} from 'redux'
 import counter from './counter'
 
 export default combineReducers({

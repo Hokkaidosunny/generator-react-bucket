@@ -3,15 +3,19 @@
  */
 import * as React from 'react'
 import withRedux from 'next-redux-wrapper'
-import store from "../store";
+import store from "../store"
+
+export interface CounterProps {
+
+}
 
 @withRedux(store)
-class example extends React.Component {
+class Counter extends React.Component<CounterProps, {}> {
   state = {
 
   }
 
-  constructor(props) {
+  constructor(props: CounterProps) {
     super(props)
   }
 
@@ -22,10 +26,10 @@ class example extends React.Component {
   render() {
     return (
       <div>
-        counter: 
+        counter:
       </div>
     )
   }
 }
 
-export default example
+export default Counter

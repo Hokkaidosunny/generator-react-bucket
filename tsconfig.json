@@ -13,6 +13,7 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "skipLibCheck": true,
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "typeRoots": [
       "./node_modules/@types"

@@ -1,3 +1,6 @@
+/**
+ * store
+ */
 import { applyMiddleware, createStore, compose } from 'redux'
 import { createLogger } from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
@@ -5,7 +8,7 @@ import { apiMiddleware } from 'redux-api-middleware'
 import rootReducer from '../reducer'
 
 // enhancers
-const enhancers = []
+const enhancers: any[] = []
 
 // middlewares
 const middlewares = [
@@ -21,7 +24,7 @@ enhancers.push(applyMiddleware(...middlewares))
 
 let store = null
 
-export default (initialState = {}) => {
+export default (initialState: any = {}) => {
   if (store) {
     return store
   }
