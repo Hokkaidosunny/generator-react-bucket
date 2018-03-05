@@ -2,31 +2,30 @@
  * counter page
  */
 import * as React from 'react'
-import withRedux from 'next-redux-wrapper'
-import store from "../store"
+import { connect } from 'react-redux'
+// import { State } from '@src/reducer'
+
+import '../style/pages/counter.scss'
 
 export interface CounterProps {
-
+  counter: number;
 }
 
-@withRedux(store)
-class Counter extends React.Component<CounterProps, {}> {
-  state = {
+const mapStateToProps = (state) => ({
+  counter: state.counter
+})
 
-  }
-
-  constructor(props: CounterProps) {
-    super(props)
-  }
-
-  componentDidMount() {
-
-  }
+@connect(mapStateToProps, null)
+class Counter extends React.Component<CounterProps, void> {
 
   render() {
+    const {counter} = this.props
+
     return (
-      <div>
-        counter:
+      <div className='counter-page'>
+        <div className='title'>counter: {counter}</div>
+        <button className='btn'>+</button>
+        <button className='btn'>-</button>
       </div>
     )
   }

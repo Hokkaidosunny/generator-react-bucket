@@ -5,6 +5,9 @@
   "repository": "https://github.com/Hokkaidosunny/react-project-seed.git",
   "author": "shenshuaijia <591915419@qq.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=8.9.1"
+  },
   "scripts": {
     "dev": "next -p 3001",
     "build": "next build",

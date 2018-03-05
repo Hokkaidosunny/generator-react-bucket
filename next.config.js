@@ -6,10 +6,22 @@
 const withTypescript = require('@zeit/next-typescript')
 const withSass = require('@zeit/next-sass')
 const {compose} = require('redux')
+const path = require('path')
 
 const enhancers = compose(
-  withSass,
-  withTypescript
+  withTypescript,
+  withSass
 )
 
-module.exports = enhancers()
+module.exports = enhancers({
+  webpack(config) {
+    config.resolve = {
+      extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
+      alias: {
+        '@src': path.join(__dirname, '.'),
+      }
+    }
+
+    return config
+  }
+})
