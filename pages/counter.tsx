@@ -3,20 +3,14 @@
  */
 import * as React from 'react'
 import { connect } from 'react-redux'
-// import { State } from '@src/reducer'
 
 import '../style/pages/counter.scss'
 
-export interface CounterProps {
+type Props = {
   counter: number;
 }
 
-const mapStateToProps = (state) => ({
-  counter: state.counter
-})
-
-@connect(mapStateToProps, null)
-class Counter extends React.Component<CounterProps, void> {
+class Counter extends React.Component<Props, {}> {
 
   render() {
     const {counter} = this.props
@@ -31,4 +25,8 @@ class Counter extends React.Component<CounterProps, void> {
   }
 }
 
-export default Counter
+const mapStateToProps = (state) => ({
+  counter: state.counter
+})
+
+export default connect(mapStateToProps, null)(Counter)
