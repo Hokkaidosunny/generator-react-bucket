@@ -29,7 +29,7 @@ export default (initialState: any = {}) => {
     return store
   }
 
-  //createStore
+  // createStore
   store = createStore(
     rootReducer,
     initialState,

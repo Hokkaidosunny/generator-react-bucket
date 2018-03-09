@@ -2,7 +2,7 @@
  * next config
  * @type {[type]}
  */
-
+const webpack = require('webpack')
 const withTypescript = require('@zeit/next-typescript')
 const withSass = require('@zeit/next-sass')
 const {compose} = require('redux')
@@ -13,6 +13,11 @@ const enhancers = compose(
   withSass
 )
 
+const env = process.env.NODE_ENV
+
+console.log('---env', env)
+
+
 module.exports = enhancers({
   webpack(config) {
     config.resolve = {
@@ -21,6 +26,13 @@ module.exports = enhancers({
         '@src': path.join(__dirname, '.'),
       }
     }
+
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.ENV': JSON.stringify(env),
+        'process.env.NODE_ENV': JSON.stringify(env)
+      })
+    )
 
     return config
   }
