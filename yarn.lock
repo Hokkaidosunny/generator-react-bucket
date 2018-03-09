@@ -352,7 +352,7 @@ aws4@^1.2.1, aws4@^1.6.0:
   version "1.6.0"
   resolved "http://registry.npm.taobao.org/aws4/download/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
-babel-code-frame@^6.26.0:
+babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
   version "6.26.0"
   resolved "http://registry.npm.taobao.org/babel-code-frame/download/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
   dependencies:
@@ -1141,7 +1141,7 @@ buffer@^4.3.0:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-builtin-modules@^1.0.0:
+builtin-modules@^1.0.0, builtin-modules@^1.1.1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/builtin-modules/download/builtin-modules-1.1.1.tgz#270f076c5a72c02f5b65a47df94c5fe3a278892f"
 
@@ -1406,6 +1406,10 @@ combined-stream@1.0.6, combined-stream@^1.0.5, combined-stream@~1.0.5:
   resolved "http://registry.npm.taobao.org/combined-stream/download/combined-stream-1.0.6.tgz#723e7df6e801ac5613113a7e445a9b69cb632818"
   dependencies:
     delayed-stream "~1.0.0"
+
+commander@^2.12.1:
+  version "2.15.0"
+  resolved "http://registry.npm.taobao.org/commander/download/commander-2.15.0.tgz#ad2a23a1c3b036e392469b8012cec6b33b4c1322"
 
 commander@^2.9.0:
   version "2.14.1"
@@ -1799,6 +1803,10 @@ detect-indent@^4.0.0:
 detect-libc@^1.0.2:
   version "1.0.3"
   resolved "http://registry.npm.taobao.org/detect-libc/download/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
+
+diff@^3.2.0:
+  version "3.5.0"
+  resolved "http://registry.npm.taobao.org/diff/download/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
 
 diffie-hellman@^5.0.0:
   version "5.0.2"
@@ -2388,7 +2396,7 @@ glob-promise@3.3.0:
   version "3.3.0"
   resolved "http://registry.npm.taobao.org/glob-promise/download/glob-promise-3.3.0.tgz#d1eb3625c4e6dcbb9b96eeae4425d5a3b135fed2"
 
-glob@7.1.2, glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.1.2, glob@~7.1.1:
+glob@7.1.2, glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@^7.1.1, glob@^7.1.2, glob@~7.1.1:
   version "7.1.2"
   resolved "http://registry.npm.taobao.org/glob/download/glob-7.1.2.tgz#c19c9df9a028702d678612384a6552404c636d15"
   dependencies:
@@ -3041,6 +3049,13 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
 js-yaml@^3.4.3:
   version "3.10.0"
   resolved "http://registry.npm.taobao.org/js-yaml/download/js-yaml-3.10.0.tgz#2e78441646bd4682e963f22b6e92823c309c62dc"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^4.0.0"
+
+js-yaml@^3.7.0:
+  version "3.11.0"
+  resolved "http://registry.npm.taobao.org/js-yaml/download/js-yaml-3.11.0.tgz#597c1a8bd57152f26d622ce4117851a51f5ebaef"
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -4836,7 +4851,7 @@ resolve-url@^0.2.1:
   version "0.2.1"
   resolved "http://registry.npm.taobao.org/resolve-url/download/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
 
-resolve@1.5.0:
+resolve@1.5.0, resolve@^1.3.2:
   version "1.5.0"
   resolved "http://registry.npm.taobao.org/resolve/download/resolve-1.5.0.tgz#1f09acce796c9a762579f31b2c1cc4c3cddf9f36"
   dependencies:
@@ -5498,6 +5513,39 @@ ts-loader@^3.3.1:
     loader-utils "^1.0.2"
     micromatch "^3.1.4"
     semver "^5.0.1"
+
+tslib@^1.8.0, tslib@^1.8.1:
+  version "1.9.0"
+  resolved "http://registry.npm.taobao.org/tslib/download/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
+
+tslint-react@^3.5.1:
+  version "3.5.1"
+  resolved "http://registry.npm.taobao.org/tslint-react/download/tslint-react-3.5.1.tgz#a5ca48034bf583fb63b42763bb89fa23062d5390"
+  dependencies:
+    tsutils "^2.13.1"
+
+tslint@^5.9.1:
+  version "5.9.1"
+  resolved "http://registry.npm.taobao.org/tslint/download/tslint-5.9.1.tgz#1255f87a3ff57eb0b0e1f0e610a8b4748046c9ae"
+  dependencies:
+    babel-code-frame "^6.22.0"
+    builtin-modules "^1.1.1"
+    chalk "^2.3.0"
+    commander "^2.12.1"
+    diff "^3.2.0"
+    glob "^7.1.1"
+    js-yaml "^3.7.0"
+    minimatch "^3.0.4"
+    resolve "^1.3.2"
+    semver "^5.3.0"
+    tslib "^1.8.0"
+    tsutils "^2.12.1"
+
+tsutils@^2.12.1, tsutils@^2.13.1:
+  version "2.22.2"
+  resolved "http://registry.npm.taobao.org/tsutils/download/tsutils-2.22.2.tgz#0b9f3d87aa3eb95bd32d26ce2b88aa329a657951"
+  dependencies:
+    tslib "^1.8.1"
 
 tty-browserify@0.0.0:
   version "0.0.0"

@@ -1,12 +1,11 @@
 /**
  * page容器
  */
-
 import * as React from 'react';
 import Head from 'next/head';
 import withRedux from 'next-redux-wrapper';
 import store from '@src/store';
-import { compose } from 'redux';
+import { compose } from 'redux'
 
 const withPage = Page => {
   class App extends React.Component {
