@@ -12,12 +12,13 @@ app.prepare()
   .then(() => {
     const server = express()
 
+    server.use(compression())
+
     server.get('*', (req, res) => {
       return handle(req, res)
     })
 
-    server
-      .listen(port, (err) => {
+    server.listen(port, (err) => {
         if (err) {
           throw err
         }

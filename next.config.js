@@ -15,9 +15,6 @@ const enhancers = compose(
 
 const env = process.env.NODE_ENV
 
-console.log('---env', env)
-
-
 module.exports = enhancers({
   webpack(config) {
     config.resolve = {
@@ -33,6 +30,12 @@ module.exports = enhancers({
         'process.env.NODE_ENV': JSON.stringify(env)
       })
     )
+
+    if (env !== 'development') {
+      config.plugins.push(
+        new webpack.optimize.UglifyJsPlugin()
+      )
+    }
 
     return config
   }

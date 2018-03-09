@@ -13,7 +13,7 @@
     "dev": "NODE_ENV=development PORT=3001 node ./.server",
     "build:server": "tsc ./server/* --outDir ./.server",
     "build": "NODE_ENV=production next build && npm run build:server",
-    "start": "NODE_ENV=production next start -p 3001"
+    "start": "NODE_ENV=production PORT=3001 node ./.server"
   },
   "dependencies": {
     "compression": "^1.7.2",
