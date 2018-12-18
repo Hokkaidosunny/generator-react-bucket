@@ -2,30 +2,21 @@
  * counter page
  */
 import * as React from 'react'
-import { compose, Action } from 'redux'
+import * as Redux from 'redux'
 import { connect } from 'react-redux'
-import withPage from '@src/hoc/withPage'
-import { increase, decrease } from '@src/action/count'
+import { increase, decrease } from '@root/action/count'
 
 import '../style/pages/counter.scss'
 
-type Props = {
-  count: number;
-  increase: () => Action;
-  decrease: () => Action;
+interface Props {
+  count: number
+  increase: () => Redux.Action
+  decrease: () => Redux.Action
 }
 
 const mapStateToProps = state => ({
   count: state.count
 })
-
-const enhance = compose(
-  withPage,
-  connect(mapStateToProps, {
-    increase,
-    decrease
-  })
-)
 
 class Counter extends React.Component<Props, {}> {
   render() {
@@ -34,10 +25,7 @@ class Counter extends React.Component<Props, {}> {
     return (
       <div className="counter-page">
         <div className="title">counter: {count}</div>
-        <button
-          className="btn"
-          onClick={increase}
-        >
+        <button className="btn" onClick={increase}>
           +
         </button>
         <button className="btn" onClick={decrease}>
@@ -48,4 +36,10 @@ class Counter extends React.Component<Props, {}> {
   }
 }
 
-export default enhance(Counter)
+export default connect(
+  mapStateToProps,
+  {
+    increase,
+    decrease
+  }
+)(Counter)

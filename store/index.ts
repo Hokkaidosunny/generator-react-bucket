@@ -1,39 +1,42 @@
-/**
- * store
- */
 import { applyMiddleware, createStore, compose } from 'redux'
 import { createLogger } from 'redux-logger'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
-import { apiMiddleware } from 'redux-api-middleware'
 import rootReducer from '../reducer'
+import * as Redux from 'redux'
 
-// enhancers
-const enhancers: any[] = []
+const isDev = process.env.NODE_ENV === 'development'
 
-// middlewares
-const middlewares = [
-  thunkMiddleware,
-  apiMiddleware,
-  createLogger({
-    duration: true,
-    diff: true
-  })
-]
+/**
+ * @param {object} initialState
+ * @param {boolean} options.isServer indicates whether it is a server side or client side
+ * @param {Request} options.req NodeJS Request object (not set when client applies initialState from server)
+ * @param {Request} options.res NodeJS Request object (not set when client applies initialState from server)
+ * @param {boolean} options.debug User-defined debug mode param
+ * @param {string} options.storeKey This key will be used to preserve store in global namespace for safe HMR
+ */
+export const makeStore = initialState => {
+  // enhancers
+  const enhancers = []
 
-enhancers.push(applyMiddleware(...middlewares))
+  // middlewares
+  const middlewares: Redux.Middleware[] = [thunkMiddleware]
 
-let store = null
+  isDev &&
+    middlewares.push(
+      createLogger({
+        predicate: () => typeof window !== 'undefined',
+        duration: true,
+        diff: true
+      })
+    )
 
-export default (initialState: any = {}) => {
-  if (store) {
-    return store
-  }
+  enhancers.push(applyMiddleware(...middlewares))
 
-  // createStore
-  store = createStore(
+  const store = createStore(
     rootReducer,
     initialState,
-    compose(...enhancers)
+    isDev ? composeWithDevTools({})(...enhancers) : compose(...enhancers)
   )
 
   return store

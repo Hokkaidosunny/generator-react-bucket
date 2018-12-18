@@ -1,9 +1,10 @@
 import Link from 'next/link'
 
-export default () =>
+export default () => (
   <div>
     Hello World.{' '}
     <Link href="/about">
       <a>About</a>
     </Link>
   </div>
+)
