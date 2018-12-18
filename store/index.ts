@@ -2,7 +2,7 @@ import { applyMiddleware, createStore, compose } from 'redux'
 import { createLogger } from 'redux-logger'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
-import rootReducer from '../reducer'
+import rootReducer from '@root/reducer'
 import * as Redux from 'redux'
 
 const isDev = process.env.NODE_ENV === 'development'

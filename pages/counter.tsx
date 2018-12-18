@@ -6,7 +6,7 @@ import * as Redux from 'redux'
 import { connect } from 'react-redux'
 import { increase, decrease } from '@root/action/count'
 
-import '../style/pages/counter.scss'
+import '../style/counter.scss'
 
 interface Props {
   count: number

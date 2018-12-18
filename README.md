@@ -1,11 +1,15 @@
-## integration
+## next-app-starter
 
-* redux
-* react-router
-* action log
-* mock
+quick start a next app project
 
 ## Usage
+
 ```
-npm run dev
+git clone https://github.com/Hokkaidosunny/next-app-starter.git
+
+cd next-app-starter
+
+yarn
+
+yarn run dev
 ```

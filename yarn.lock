@@ -775,6 +775,16 @@
   resolved "http://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.119.tgz#be847e5f4bc3e35e46d041c394ead8b603ad8b39"
   integrity sha1-voR+X0vD415G0EHDlOrYtgOtizk=
 
+"@types/next-redux-wrapper@^2.0.2":
+  version "2.0.2"
+  resolved "http://registry.npm.taobao.org/@types/next-redux-wrapper/download/@types/next-redux-wrapper-2.0.2.tgz#ab74f5988911b3403c4da91c6d7dabac4aa2f9fb"
+  integrity sha1-q3T1mIkRs0A8TakcbX2rrEqi+fs=
+  dependencies:
+    "@types/node" "*"
+    "@types/react" "*"
+    "@types/react-redux" "*"
+    redux "^3.6.0"
+
 "@types/next-server@*":
   version "7.0.2"
   resolved "http://registry.npm.taobao.org/@types/next-server/download/@types/next-server-7.0.2.tgz#7115f4f9ad9605d4ce1d36b0e125dd523670c7b4"
@@ -798,6 +808,13 @@
   version "2.1.4"
   resolved "http://registry.npm.taobao.org/@types/node-fetch/download/@types/node-fetch-2.1.4.tgz#093d1beae11541aef25999d70aa09286fd025b1a"
   integrity sha1-CT0b6uEVQa7yWZnXCqCShv0CWxo=
+  dependencies:
+    "@types/node" "*"
+
+"@types/node-sass@^3.10.32":
+  version "3.10.32"
+  resolved "http://registry.npm.taobao.org/@types/node-sass/download/@types/node-sass-3.10.32.tgz#b296cce7144ffab77b84090caad4f1e4bbea8e09"
+  integrity sha1-spbM5xRP+rd7hAkMqtTx5Lvqjgk=
   dependencies:
     "@types/node" "*"
 
@@ -826,7 +843,7 @@
     "@types/react" "*"
     "@types/webpack" "*"
 
-"@types/react-redux@^6.0.11":
+"@types/react-redux@*", "@types/react-redux@^6.0.11":
   version "6.0.11"
   resolved "http://registry.npm.taobao.org/@types/react-redux/download/@types/react-redux-6.0.11.tgz#d872254bbcba42465195a5475f40b22502b0407d"
   integrity sha1-2HIlS7y6QkZRlaVHX0CyJQKwQH0=
@@ -841,6 +858,11 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/redux-actions@^2.3.1":
+  version "2.3.1"
+  resolved "http://registry.npm.taobao.org/@types/redux-actions/download/@types/redux-actions-2.3.1.tgz#b574569d76df9a0963c421bf509bcf2d0c6b17d3"
+  integrity sha1-tXRWnXbfmgljxCG/UJvPLQxrF9M=
 
 "@types/redux-logger@^3.0.6":
   version "3.0.6"
