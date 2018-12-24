@@ -2,6 +2,15 @@
 
 quick start a next app project
 
+## Integration
+
+- typescript
+- redux
+- redux-thunk
+- redux-logger
+- sass
+- less
+
 ## Usage
 
 ```
